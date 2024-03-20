@@ -6,32 +6,32 @@ Created by Pierce Alvir and Steven Santamorena
 from drivers.axis import Axis
 
 # Function for keeping track and performing xyz movement    
-def xyz((x: Axis(), y: Axis(), z: Axis(), x_coord: int), y_coord: int, z_coord: int):
+def xyz(x: Axis, y: Axis, z: Axis, x_coord: int, y_coord: int, z_coord: int):
     
-    if (x_coord > x.limit || x_coord < 0)
+    if (x_coord > x.limit or x_coord < 0):
         print(f"Error")
-    elif (x_coord > x.pos)
+    elif (x_coord > x.pos):
         x_temp = x_coord-x.pos
         x.positive(x_temp)
-    else
+    else:
         x_temp = x.pos-x_coord
         x.negative(x_temp)
 
-    if (y_coord > y.limit || y_coord < 0)
+    if (y_coord > y.limit or y_coord < 0):
         print(f"Error")
-    elif (y_coord > y.pos)
+    elif (y_coord > y.pos):
         y_temp = y_coord-y.pos
         y.positive(y_temp)
-    else
+    else:
         y_temp = y.pos-y_coord
         y.negative(y_temp)
 
-    if (z_coord > z.limit || z_coord < 0)
+    if (z_coord > z.limit or z_coord < 0):
         print(f"Error")
-    elif (z_coord > z.pos)
+    elif (z_coord > z.pos):
         z_temp = z_coord-z.pos
         z.positive(z_temp)
-    else
+    else:
         z_temp = z.pos-z_coord
         z.negative(z_temp)
 
