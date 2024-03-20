@@ -34,22 +34,34 @@ z = Axis(Z_STEP_PIN,Z_DIR_PIN,Z_EN_PIN,Z_LIMIT,Z_MOTOR_VAR)
 '''
 
 class Axis():
-    def __init__(self, step_pin, dir_pin, en_pin, limit, motor_var):
-        self.steps_per_rev = 200 # Number of steps per revolution on stepper motor
-        self.step_sleep_time = 0.001 # Time to sleep in between turning on and off GPIO for steps
+    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay: int, microstep_mode = 1) -> None:
+        '''
+        step_pin: int, GPIO pin number for step pin
+        dir_pin: int, GPIO pin number for direction pin
+        en_pin: int, GPIO pin number for enable pin
+        limit: int, maximum number of steps the axis can move from zeroed position
+        step_delay: int, delay between steps in seconds, controls speed of motor
+        microstep_mode: int, number of microsteps per step, default is 1
+        '''
+        # Pin assignments
+        self.step_pin = step_pin
+        self.dir_pin = dir_pin
+        self.en_pin = en_pin
+
+        # Axis settings
+        self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
+        self.limit = limit
+        self.step_delay = step_delay
         
-        self.pos = 0
-        self.step_pin = self.step_pin
-        self.dir_pin = self.dir_pin
-        self.en_pin = self.en_pin
-        self.limit = self.limit
-        self.motor_var = self.motor_var
-        
+        # Setup GPIO pins
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.step_pin, GPIO.OUT)
         GPIO.setup(self.dir_pin, GPIO.OUT)
         GPIO.setup(self.en_pin, GPIO.OUT)
         GPIO.output(self.en_pin,0)
+
+        # Initialize position
+        self.pos = 0
 
     def move_steps(self, steps: int):
         print(f"Moving {steps} steps")
@@ -58,7 +70,7 @@ class Axis():
             time.sleep(0.0005)
 
             GPIO.output(self.step_pin, 0)
-            time.sleep(self.motor_var)
+            time.sleep(self.step_delay)
 
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1)
