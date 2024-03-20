@@ -1,5 +1,5 @@
 '''
-Pin Information File
+Constants Information File
 
 Created by Pierce Alvir and Steven Santamorena
 
@@ -22,3 +22,8 @@ Z_DIR_PIN = 20
 Z_EN_PIN = 21
 Z_LIMIT = 3400
 Z_MOTOR_VAR = 0.0008
+
+HEAD_STEP_PIN = 13
+HEAD_DIR_PIN = 19
+HEAD_EN_PIN = 26
+HEAD_VACUUM_PIN = 25
