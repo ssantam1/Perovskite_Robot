@@ -60,16 +60,6 @@ class stepper():
         self.move_steps(steps)
         self.pos -= steps
 
-class X_Axis(Axis):
-    # Example axis inheritance for Pierce
-    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
-        step_pin = 18
-        dir_pin = 23
-        en_pin = 24
-        limit = limit if limit else 1200
-        step_delay = step_delay if step_delay else 0.001
-        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
-    
 if __name__ == "__main__":
     X_STEP_PIN = 18
     X_DIR_PIN = 23
