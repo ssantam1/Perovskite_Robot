@@ -33,16 +33,17 @@ y = Axis(Y_STEP_PIN,Y_DIR_PIN,Y_EN_PIN,Y_LIMIT,Y_MOTOR_VAR)
 z = Axis(Z_STEP_PIN,Z_DIR_PIN,Z_EN_PIN,Z_LIMIT,Z_MOTOR_VAR)
 '''
 
-class Axis(step_pin: int, dir_pin: int, en_pin: int, limit: int, motor_var: float):
-    def __init__(self):
+class Axis():
+    def __init__(self, step_pin, dir_pin, en_pin, limit, motor_var):
         self.steps_per_rev = 200 # Number of steps per revolution on stepper motor
         self.step_sleep_time = 0.001 # Time to sleep in between turning on and off GPIO for steps
         
         self.pos = 0
-        self.step_pin = step_pin
-        self.dir_pin = dir_pin
-        self.en_pin = en_pin
-        self.limit = limit
+        self.step_pin = self.step_pin
+        self.dir_pin = self.dir_pin
+        self.en_pin = self.en_pin
+        self.limit = self.limit
+        self.motor_var = self.motor_var
         
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.step_pin, GPIO.OUT)
@@ -57,7 +58,7 @@ class Axis(step_pin: int, dir_pin: int, en_pin: int, limit: int, motor_var: floa
             time.sleep(0.0005)
 
             GPIO.output(self.step_pin, 0)
-            time.sleep(motor_var)
+            time.sleep(self.motor_var)
 
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1)
