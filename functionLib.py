@@ -3,39 +3,35 @@
 Created by Pierce Alvir and Steven Santamorena hi
 
 '''
-from drivers.axis import Axis
+from drivers.axis import *
 
 # Function for keeping track and performing xyz movement    
-def xyz(x: Axis, y: Axis, z: Axis, x_coord: int, y_coord: int, z_coord: int):
-    
-    if (x_coord > x.limit or x_coord < 0):
-        print(f"Error")
-    elif (x_coord > x.pos):
-        x_temp = x_coord-x.pos
-        x.positive(x_temp)
-    else:
-        x_temp = x.pos-x_coord
-        x.negative(x_temp)
+def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple(int, int, int), obstacle_det: bool):
+    if obstacle_det:
+        zyx(axis, (3200, coord[2], coord[3]), false)
 
-    if (y_coord > y.limit or y_coord < 0):
-        print(f"Error")
-    elif (y_coord > y.pos):
-        y_temp = y_coord-y.pos
-        y.positive(y_temp)
-    else:
-        y_temp = y.pos-y_coord
-        y.negative(y_temp)
+    axis_and_coords = [(axis[i], coord[i]) for i in range(len(axis))]
 
-    if (z_coord > z.limit or z_coord < 0):
-        print(f"Error")
-    elif (z_coord > z.pos):
-        z_temp = z_coord-z.pos
-        z.positive(z_temp)
-    else:
-        z_temp = z.pos-z_coord
-        z.negative(z_temp)
+    '''
+    (axis[1], coord[1]),
+    (axis[2], coord[2]),
+    (axis[3], coord[3])
 
-    return (x,y,z)
+    for (a, c) in axis_and_coords:
+        a.positive(c)
+        
+    '''
+        
+    for i in range(3):
+        if (coord[i] >axis[i].limit or coord[i] < 0):
+            print(f"Error")
+        elif (coord[i] > axis[i].pos):
+            axis_temp = coord[i]-axis[i].pos
+            axis[i].positive(axis_temp)
+        else:
+            axis_temp = axis[i].pos-coord[i]
+            axis[i].negative(axis_temp)
+    return (z,y,x)
 
 # Function for pipette tip pick up
 
