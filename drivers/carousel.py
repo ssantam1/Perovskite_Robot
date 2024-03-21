@@ -23,32 +23,19 @@ import RPi.GPIO as GPIO
 
 class Carousel():
     '''Class that represents the carousel inside the Perovskite Synthesis System'''
-    # GPIO pin numbers
-    step_pin = 17
-    dir_pin = 27
-    en_pin = 22
 
     steps_per_rev = 200 # Number of steps per revolution on stepper motor
     num_vials = 8 # Number of vials/slots in the carousel
     step_sleep_time = 0.0001 # Time to sleep in between turning on and off GPIO for steps
 
-    def __init__(self):
-        '''Constructs carousel object, configures GPIO pins, overwrites num_vials if necessary'''
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.step_pin, GPIO.OUT)
-        GPIO.setup(self.dir_pin, GPIO.OUT)
-        GPIO.setup(self.en_pin, GPIO.OUT)
-        GPIO.output(self.en_pin,0)
-
-    def move_steps(self, steps: int):
-        '''Moves the stepper a number a steps, does not change dir pin'''
-        print(f"Moving {steps} steps")
-        for _ in range(steps):
-            GPIO.output(self.step_pin,1)
-            time.sleep(0.001)
-
-            GPIO.output(self.step_pin,0)
-            time.sleep(0.005)
+   def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
+        step_pin = CAROUSEL_STEP_PIN
+        dir_pin = CAROUSEL_DIR_PIN
+        en_pin = CAROUSEL_EN_PIN
+        limit = limit if limit else 1200 #random limit that i am putting
+        step_delay1 = step_delay1 if step_delay1 else CAROUSEL_STEP_DELAY1
+        step_delay2 = step_delay2 if step_delay2 else CAROUSEL_STEP_DELAY2
+        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay1, step_delay2, microstep_mode)
 
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:

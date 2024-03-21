@@ -50,6 +50,7 @@ CAROUSEL_EN_PIN = 22
 CAROUSEL_VIAL = 8
 CAROUSEL_STEP_DELAY1 = 0.001
 CAROUSEL_STEP_DELAY2 = 0.005
+CAROUSEL_STEP_SLEEP_TIME = 0.0001 #not sure if this gets used but it was in carousel file
 
 
 
