@@ -21,7 +21,16 @@ class XAxis(Stepper):
         limit = limit if limit else X_LIMIT
         step_delay = step_delay if step_delay else X_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
-        self.pos = -1400
+
+    def positive(self, steps: int):
+        GPIO.output(self.dir_pin, 1)
+        self.move_steps(steps)
+        self.pos += steps
+
+    def negative(self, steps: int):
+        GPIO.output(self.dir_pin, 0)
+        self.move_steps(steps)
+        self.pos -= steps
 
     def right(self, steps: int):
         self.positive(steps)
@@ -38,6 +47,16 @@ class YAxis(Stepper):
         step_delay = step_delay if step_delay else Y_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
 
+    def positive(self, steps: int):
+        GPIO.output(self.dir_pin, 0)
+        self.move_steps(steps)
+        self.pos += steps
+
+    def negative(self, steps: int):
+        GPIO.output(self.dir_pin, 1)
+        self.move_steps(steps)
+        self.pos -= steps
+
     def inward(self, steps: int):
         self.positive(steps)
 
@@ -52,7 +71,16 @@ class ZAxis(Stepper):
         limit = limit if limit else Z_LIMIT
         step_delay = step_delay if step_delay else Z_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
-        self.pos = -3400
+
+    def positive(self, steps: int):
+        GPIO.output(self.dir_pin, 0)
+        self.move_steps(steps)
+        self.pos += steps
+
+    def negative(self, steps: int):
+        GPIO.output(self.dir_pin, 1)
+        self.move_steps(steps)
+        self.pos -= steps
 
     def up(self, steps: int):
         self.negative(steps)
