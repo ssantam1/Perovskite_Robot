@@ -15,16 +15,16 @@ import constants
 class Head():
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
-    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
+    def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
         step_pin = HEAD_STEP_PIN
         dir_pin = HEAD_DIR_PIN
         en_pin = HEAD_EN_PIN
         limit = limit if limit else HEAD_LIMIT
-        step_delay = step_delay if step_delay else HEAD_STEP_DELAY
+        step_delay1 = step_delay1 if step_delay1 else HEAD_STEP_DELAY1
+        step_delay2 = step_delay2 if step_delay2 else HEAD_STEP_DELAY2
         microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
+        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay1, step_delay2, microstep_mode)
         vacuum_pin = HEAD_VACUUM_PIN
-        
 
     def down(self, steps: int):
         '''Moves the pipette plunger down a number of steps'''
