@@ -30,6 +30,14 @@ def weigh(uL: int):
 	z.up(1500)
 	x.left(200)
 
+def enter_vial(vial_num: int):
+	z.up(4000)
+	y.inward(3200)
+	x.right(470)
+	c.move_to_vial(5)
+	z.down(2400)
+
+
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
 	while(True):
