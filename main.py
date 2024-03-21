@@ -22,7 +22,7 @@ def weigh(uL: int):
 	z.down(1500)
 	
 	p.down_uL(uL)
-	input()
+	time.sleep(0.5)
 	p.up_uL(p.max_uL)
 	
 	z.up(1500)
