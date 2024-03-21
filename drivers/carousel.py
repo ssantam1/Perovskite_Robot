@@ -49,14 +49,6 @@ class Carousel(Stepper):
         GPIO.output(self.dir_pin,1)
         self.move_steps(steps_to_move)
 
-        # Pause for the specified delay before returning to the original position
-        time.sleep(1)
-
-        # Move the stepper motor back to the original position
-        print("swapping dir to 0")
-        GPIO.output(self.dir_pin,0)
-        self.move_steps(steps_to_move)
-
     # Define a function to handle user input and move the carousel to the desired vials
     def move_to_vials(self):
         '''Takes input sequence from user and calls move_to_vial() for each item'''
