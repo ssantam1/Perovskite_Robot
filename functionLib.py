@@ -6,7 +6,7 @@ Created by Pierce Alvir and Steven Santamorena hi
 from drivers.axis import *
 
 # Function for keeping track and performing xyz movement    
-def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple(int, int, int), obstacle_det: bool):
+def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple[int, int, int], obstacle_det: bool):
     if obstacle_det:
         zyx(axis, (3200, coord[2], coord[3]), false)
 
