@@ -1,69 +1,51 @@
+'''
+
+Robotic Head Class File
+
+Created by Pierce Alvir and Steven Santamorena
+
+Usage: Class to operate robotic head mounted on the gantry
+
+'''
 import time 
 import board
 import RPi.GPIO as GPIO
+import constants
 
 class Head():
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
-    def __init__(self):
-        '''Constructs pipette object, configures GPIO pins'''
-        # GPIO pin numbers
-        self.step_pin = 13
-        self.dir_pin = 19
-        self.en_pin = 26
-        self.vacuum_pin = 25
-
-        # Stepper motor settings
-        self.steps_per_rev = 800 # Num steps per revolution on stepper motor (200 x 4 from microstepping)
-        self.steps_per_uL = 150/200 # Num steps per microliter
-        self.step_sleep_time = 0.05 # Time to sleep in between turning on and off GPIO for steps
+    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
+        step_pin = HEAD_STEP_PIN
+        dir_pin = HEAD_DIR_PIN
+        en_pin = HEAD_EN_PIN
+        limit = limit if limit else HEAD_LIMIT
+        step_delay = step_delay if step_delay else HEAD_STEP_DELAY
+        microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
+        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
+        vacuum_pin = HEAD_VACUUM_PIN
         
-        # Limits and other things
-        self.uL_correction = 0.925 # Correction factor for desired uL (set to 0 and run a series of tests to recalibrate)
-        self.max_uL = 200 # Maximum volume of pipette
-        self.limit = 275 # How many steps to move to lower the suction cup
-        
-        # Set up GPIO
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.step_pin, GPIO.OUT)
-        GPIO.setup(self.dir_pin, GPIO.OUT)
-        GPIO.setup(self.en_pin, GPIO.OUT)
-        GPIO.output(self.en_pin, 0)
-
-    # General motor movement functions
-
-    def move_steps(self, steps: int):
-        '''Moves the stepper a number a steps, does not change dir pin'''
-        print(f"Moving {steps} steps")
-        for _ in range(steps):
-            GPIO.output(self.step_pin,1)
-            time.sleep(0.0003)
-            
-            GPIO.output(self.step_pin,0)
-            time.sleep(0.01)
 
     def down(self, steps: int):
         '''Moves the pipette plunger down a number of steps'''
-        GPIO.output(self.dir_pin, 1)
-        self.move_steps(steps)
+        self.positive(steps)
         
     def up(self, steps: int):
         '''Moves the pipette plunger up a number of steps'''
-        GPIO.output(self.dir_pin, 0)
-        self.move_steps(steps)
+        self.negative(steps)
 
     # Pipette actuation functions
         
     def down_uL(self, uL: int):
         '''Moves the pipette plunger down a number of microliters'''
-        uL = uL * self.uL_correction
-        steps = int(self.steps_per_uL * uL)
+        uL = uL * HEAD_CORRECTION
+        steps = int(HEAD_STEPS_PER_UL * uL)
         self.down(steps)
         
     def up_uL(self, uL: int):
         '''Moves the pipette plunger up a number of microliters'''
-        uL = uL * self.uL_correction
-        steps = int(self.steps_per_uL * uL)
+        uL = uL * HEAD_CORRECTION
+        steps = int(HEAD_STEPS_PER_UL * uL)
         self.up(steps)
     
     # Suciton cup functions

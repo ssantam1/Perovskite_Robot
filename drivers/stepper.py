@@ -26,7 +26,7 @@ class stepper():
         self.dir_pin = dir_pin
         self.en_pin = en_pin
 
-        # Axis settings
+        # Stepper settings
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
         self.limit = limit
         self.step_delay = step_delay
