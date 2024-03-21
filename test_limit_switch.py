@@ -6,6 +6,7 @@ class LimitSwitch:
 	def __init__(self, input_pin: int, debounce_amount: int) -> None:
 		self.input_pin = input_pin
 		self.debounce_amount = debounce_amount
+		self.initialize_switch()
 		
 		self.state = False
 
@@ -22,3 +23,6 @@ if __name__ == "__main__":
 	while True:
 		if switch.is_pressed():
 			print("Switch pressed!")
+		else:
+			print("Not pressed...")
+		time.sleep(0.1)
