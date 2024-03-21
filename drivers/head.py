@@ -16,15 +16,14 @@ from constants import *
 class Head(Stepper):
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
-    def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
+    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         self.step_pin = HEAD_STEP_PIN
         self.dir_pin = HEAD_DIR_PIN
         self.en_pin = HEAD_EN_PIN
         self.limit = limit if limit else HEAD_LIMIT
-        self.step_delay1 = step_delay1 if step_delay1 else HEAD_STEP_DELAY1
-        self.step_delay2 = step_delay2 if step_delay2 else HEAD_STEP_DELAY2
+        self.step_delay = step_delay if step_delay else HEAD_STEP_DELAY
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.limit, self.step_delay1, self.step_delay2, self.microstep_mode)
+        super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.limit, self.step_delay, self.microstep_mode)
         self.vacuum_pin = HEAD_VACUUM_PIN
         self.max_uL = 200
 
@@ -38,6 +37,10 @@ class Head(Stepper):
         self.negative(steps)
 
     # Pipette actuation functions
+        
+    def volume_correction(self, uL: int) -> int:
+        '''Corrects the volume of the pipette to account for the head'''
+        return ((uL * UL_CORRECTION_FACTOR) + UL_CORRECTION_OFFSET)
         
     def down_uL(self, uL: int):
         '''Moves the pipette plunger down a number of microliters'''
