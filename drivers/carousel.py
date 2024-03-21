@@ -20,22 +20,23 @@ import time
 import asyncio
 import board
 import RPi.GPIO as GPIO
+from drivers.stepper import Stepper
+from constants import *
 
-class Carousel():
+class Carousel(Stepper):
     '''Class that represents the carousel inside the Perovskite Synthesis System'''
 
     steps_per_rev = 200 # Number of steps per revolution on stepper motor
     num_vials = 8 # Number of vials/slots in the carousel
     step_sleep_time = 0.0001 # Time to sleep in between turning on and off GPIO for steps
 
-   def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
+    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = CAROUSEL_STEP_PIN
         dir_pin = CAROUSEL_DIR_PIN
         en_pin = CAROUSEL_EN_PIN
         limit = limit if limit else 1200 #random limit that i am putting
-        step_delay1 = step_delay1 if step_delay1 else CAROUSEL_STEP_DELAY1
-        step_delay2 = step_delay2 if step_delay2 else CAROUSEL_STEP_DELAY2
-        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay1, step_delay2, microstep_mode)
+        step_delay = step_delay if step_delay else CAROUSEL_STEP_DELAY
+        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
 
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:
