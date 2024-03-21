@@ -2,17 +2,23 @@ import time
 import board
 import RPi.GPIO as GPIO
 
-sw_pin = 4
+class LimitSwitch:
+	def __init__(self, input_pin: int, debounce_amount: int) -> None:
+		self.input_pin = input_pin
+		self.debounce_amount = debounce_amount
+		
+		self.state = False
 
-sw_pressed = False
-sw_pressed_prev = False
+	def initialize_switch(self) -> None:
+		GPIO.setmode(GPIO.BCM)
+		GPIO.setup(self.input_pin, GPIO.IN)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(sw_pin, GPIO.IN)
+	def is_pressed(self) -> bool:
+		self.state = GPIO.input(self.input_pin)
+		return self.state
 
-while True:
-	sw_pressed = GPIO.input(sw_pin)
-	if sw_pressed != sw_pressed_prev:
-		if sw_pressed:
-			print("Pressed!")
-		sw_pressed_prev = sw_pressed
+if __name__ == "__main__":
+	switch = LimitSwitch(4, 10)
+	while True:
+		if switch.is_pressed():
+			print("Switch pressed!")
