@@ -12,13 +12,14 @@ import board
 import RPi.GPIO as GPIO
 
 class stepper():
-    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay: int, microstep_mode = 1) -> None:
+    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay1: int, step_delay2: int, microstep_mode = 1) -> None:
         '''
         step_pin: int, GPIO pin number for step pin
         dir_pin: int, GPIO pin number for direction pin
         en_pin: int, GPIO pin number for enable pin
         limit: int, maximum number of steps the axis can move from zeroed position
-        step_delay: int, delay between steps in seconds, controls speed of motor
+        step_delay1: int, delay between steps in seconds, controls speed of motor
+        step_delay2: int, delay between steps in seconds, controls speed of motor
         microstep_mode: int, number of microsteps per step, default is 1
         '''
         # Pin assignments
@@ -29,7 +30,8 @@ class stepper():
         # Stepper settings
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
         self.limit = limit
-        self.step_delay = step_delay
+        self.step_delay1 = step_delay1
+        self.step_delay2 = step_delay2
         
         # Setup GPIO pins
         GPIO.setmode(GPIO.BCM)
@@ -45,10 +47,10 @@ class stepper():
         print(f"Moving {steps} steps")
         for _ in range(steps):
             GPIO.output(self.step_pin, 1)
-            time.sleep(0.0005) #this was .0003 in the head implementation
+            time.sleep(self.step_delay1)
 
             GPIO.output(self.step_pin, 0)
-            time.sleep(self.step_delay)
+            time.sleep(self.step_delay2)
 
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1)
