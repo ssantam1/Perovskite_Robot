@@ -49,7 +49,7 @@ class Stepper():
 
             GPIO.output(self.step_pin, 0)
             time.sleep(self.step_delay)
-
+    """
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1)
         self.move_steps(steps)
@@ -58,7 +58,7 @@ class Stepper():
     def negative(self, steps: int):
         GPIO.output(self.dir_pin, 0)
         self.move_steps(steps)
-        self.pos -= steps
+        self.pos -= steps"""
 
 if __name__ == "__main__":
     # Get motor parameters from user
