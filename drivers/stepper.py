@@ -12,14 +12,13 @@ import board
 import RPi.GPIO as GPIO
 
 class Stepper():
-    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay1: int, step_delay2: int, microstep_mode = 1) -> None:
+    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay: int, microstep_mode = 1) -> None:
         '''
         step_pin: int, GPIO pin number for step pin
         dir_pin: int, GPIO pin number for direction pin
         en_pin: int, GPIO pin number for enable pin
         limit: int, maximum number of steps the axis can move from zeroed position
-        step_delay1: int, delay between steps in seconds, controls speed of motor
-        step_delay2: int, delay between steps in seconds, controls speed of motor
+        step_delay: int, delay between steps in seconds, controls speed of motor
         microstep_mode: int, number of microsteps per step, default is 1
         '''
         # Pin assignments
@@ -30,8 +29,7 @@ class Stepper():
         # Stepper settings
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
         self.limit = limit
-        self.step_delay1 = step_delay1
-        self.step_delay2 = step_delay2
+        self.step_delay = step_delay
         
         # Setup GPIO pins
         GPIO.setmode(GPIO.BCM)
@@ -47,10 +45,10 @@ class Stepper():
         print(f"Moving {steps} steps")
         for _ in range(steps):
             GPIO.output(self.step_pin, 1)
-            time.sleep(self.step_delay1)
+            time.sleep(0.0001)
 
             GPIO.output(self.step_pin, 0)
-            time.sleep(self.step_delay2)
+            time.sleep(self.step_delay)
 
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1)
@@ -68,10 +66,9 @@ if __name__ == "__main__":
     dir_pin = int(input("Direction Pin: "))
     en_pin = int(input("Enable Pin: "))
     limit = int(input("Limit: "))
-    step_delay1 = float(input("Step Delay 1: "))
-    step_delay2 = float(input("Step Delay 2: "))
+    step_delay = float(input("Step Delay: "))
     microstep_mode = int(input("Microstep Mode: "))
-    stepper = Stepper(step_pin, dir_pin, en_pin, limit, step_delay1, step_delay2, microstep_mode)
+    stepper = Stepper(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
 
     while(True):
         print(f"Current Position: {stepper.pos}")

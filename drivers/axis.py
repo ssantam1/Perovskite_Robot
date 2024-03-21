@@ -14,13 +14,12 @@ from constants import *
 from stepper import Stepper
 
 class XAxis(Stepper):
-    def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
+    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = X_STEP_PIN
         dir_pin = X_DIR_PIN
         en_pin = X_EN_PIN
         limit = limit if limit else X_LIMIT
-        step_delay1 = step_delay1 if step_delay1 else X_STEP_DELAY1
-        step_delay2 = step_delay2 if step_delay2 else X_STEP_DELAY2
+        step_delay = step_delay if step_delay else X_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, limit, step_delay1, step_delay2, microstep_mode)
 
     def right(self, steps: int):
