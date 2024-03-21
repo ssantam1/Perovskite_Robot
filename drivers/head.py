@@ -44,13 +44,13 @@ class Head(Stepper):
         
     def down_uL(self, uL: int):
         '''Moves the pipette plunger down a number of microliters'''
-        uL = uL * HEAD_CORRECTION
+        uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.down(steps)
         
     def up_uL(self, uL: int):
         '''Moves the pipette plunger up a number of microliters'''
-        uL = uL * HEAD_CORRECTION
+        uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.up(steps)
     
