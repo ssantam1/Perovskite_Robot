@@ -11,7 +11,7 @@ import time
 import board
 import RPi.GPIO as GPIO
 
-class stepper():
+class Stepper():
     def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay1: int, step_delay2: int, microstep_mode = 1) -> None:
         '''
         step_pin: int, GPIO pin number for step pin
