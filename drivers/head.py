@@ -10,9 +10,10 @@ Usage: Class to operate robotic head mounted on the gantry
 import time 
 import board
 import RPi.GPIO as GPIO
-import constants
+from drivers.stepper import Stepper
+from constants import *
 
-class Head():
+class Head(Stepper):
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
     def __init__(self, limit: int = None, step_delay1: int = None, step_delay2: int = None, microstep_mode: int = 1) -> None:
