@@ -1,15 +1,14 @@
-from drivers.xaxis import Xaxis
-from drivers.yaxis import Yaxis
-from drivers.zaxis import Zaxis
+from drivers.axis import *
 from drivers.head import Head
 from drivers.carousel import Carousel
+from functionLib import zyx
 from test_vacuum_pump import *
 import time
 
 # Create instances of the objects
-x = Xaxis()
-y = Yaxis()
-z = Zaxis()
+x = XAxis()
+y = YAxis()
+z = ZAxis()
 p = Head()
 c = Carousel()
 	
@@ -31,9 +30,7 @@ def weigh(uL: int):
 	x.left(200)
 
 def enter_vial(vial_num: int):
-	z.up(4000)
-	y.inward(3200)
-	x.right(470)
+	zyx((z,y,x),(4000,3200,470),False)
 	c.move_to_vial(5)
 	z.down(2400)
 
