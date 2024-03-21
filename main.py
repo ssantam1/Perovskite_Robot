@@ -30,9 +30,9 @@ def weigh(uL: int):
 	x.left(200)
 
 def enter_vial(vial_num: int):
-	zyx((z,y,x),(4000,3200,470),False)
+	#zyx((z,y,x),(4000,3165,470),False)
 	c.move_to_vial(5)
-	z.down(2400)
+	zyx((z,y,x),(1600,3165,470),True)
 
 
 # Executes whatever commands the user inputs
