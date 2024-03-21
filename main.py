@@ -2,6 +2,7 @@ from drivers.xaxis import Xaxis
 from drivers.yaxis import Yaxis
 from drivers.zaxis import Zaxis
 from drivers.head import Head
+from drivers.carousel import Carousel
 from test_vacuum_pump import *
 import time
 
@@ -10,6 +11,7 @@ x = Xaxis()
 y = Yaxis()
 z = Zaxis()
 p = Head()
+c = Carousel()
 	
 def weigh(uL: int):
 	p.down_uL(p.max_uL) #Empty air from pipette
