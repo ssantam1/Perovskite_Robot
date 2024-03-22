@@ -34,10 +34,10 @@ class Carousel(Stepper):
         step_pin = CAROUSEL_STEP_PIN
         dir_pin = CAROUSEL_DIR_PIN
         en_pin = CAROUSEL_EN_PIN
-        self.home_pin = None
+        home_pin = None
         limit = limit if limit else 1200 #random limit that i am putting
         step_delay = step_delay if step_delay else CAROUSEL_STEP_DELAY
-        super().__init__(step_pin, dir_pin, en_pin, self.home_pin, limit, step_delay, microstep_mode)
+        super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, microstep_mode)
 
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:

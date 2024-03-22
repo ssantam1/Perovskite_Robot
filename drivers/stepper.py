@@ -25,7 +25,7 @@ class Stepper():
         self.step_pin = step_pin
         self.dir_pin = dir_pin
         self.en_pin = en_pin
-        self.home_sw_pin = home_pin
+        self.home_pin = home_pin
 
         # Stepper settings
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
@@ -56,7 +56,7 @@ class Stepper():
 
     def is_home(self):
         # Our switches are active low
-        return not GPIO.input(self.home_sw_pin)
+        return not GPIO.input(self.home_pin)
 
     def go_home(self):
         print("Going home...")

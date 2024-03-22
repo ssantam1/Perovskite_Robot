@@ -73,16 +73,6 @@ class Head(Stepper):
         '''Turns off the vacuum pump'''
         GPIO.output(self.vacuum_pin, 0)
 
-    # Motor power settings for live manipulation
-        
-    def enable(self):
-        '''Enables the motor to move the pipette'''
-        GPIO.output(self.en_pin, 0)
-        
-    def disable(self):
-        '''Disables the motor to prevent movement'''
-        GPIO.output(self.en_pin, 1)
-
 if __name__ == "__main__":
     # Give user control of the pipette for testing
     p = Head()
