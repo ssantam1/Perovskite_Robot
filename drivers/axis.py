@@ -56,7 +56,7 @@ class ZAxis(Stepper):
         super().__init__(step_pin, dir_pin, en_pin, self.home_pin, limit, step_delay, flip_dir=True, microstep_mode=microstep_mode)
 
     def up(self, steps: int):
-        self.negative(steps)
+        self.positive(steps)
 
     def down(self, steps: int):
-        self.positive(steps)
+        self.negative(steps)

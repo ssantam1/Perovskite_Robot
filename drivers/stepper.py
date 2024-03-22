@@ -46,7 +46,7 @@ class Stepper():
         self.pos = 0
 
     def move_steps(self, steps: int):
-        print(f"Moving {steps} steps")
+        #print(f"Moving {steps} steps")
         for _ in range(steps):
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
