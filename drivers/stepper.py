@@ -12,7 +12,7 @@ import board
 import RPi.GPIO as GPIO
 
 class Stepper():
-    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay: int, microstep_mode = 1) -> None:
+    def __init__(self, step_pin: int, dir_pin: int, en_pin: int, limit: int, step_delay: int, flip_dir: bool = False, microstep_mode = 1) -> None:
         '''
         step_pin: int, GPIO pin number for step pin
         dir_pin: int, GPIO pin number for direction pin
@@ -30,6 +30,7 @@ class Stepper():
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
         self.limit = limit
         self.step_delay = step_delay
+        self.flip_dir = flip_dir
         
         # Setup GPIO pins
         GPIO.setmode(GPIO.BCM)
@@ -49,16 +50,16 @@ class Stepper():
 
             GPIO.output(self.step_pin, 0)
             time.sleep(self.step_delay)
-    """
+
     def positive(self, steps: int):
-        GPIO.output(self.dir_pin, 1)
+        GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
         self.move_steps(steps)
         self.pos += steps
 
     def negative(self, steps: int):
-        GPIO.output(self.dir_pin, 0)
+        GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
         self.move_steps(steps)
-        self.pos -= steps"""
+        self.pos -= steps
 
 if __name__ == "__main__":
     # Get motor parameters from user
