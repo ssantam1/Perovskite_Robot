@@ -38,7 +38,8 @@ class Stepper():
         GPIO.setup(self.step_pin, GPIO.OUT)
         GPIO.setup(self.dir_pin, GPIO.OUT)
         GPIO.setup(self.en_pin, GPIO.OUT)
-        GPIO.setup(self.home_sw_pin, GPIO.IN)
+        if self.home_pin is not None:
+            GPIO.setup(self.home_pin, GPIO.IN)
         GPIO.output(self.en_pin,0)
 
         # Initialize position
