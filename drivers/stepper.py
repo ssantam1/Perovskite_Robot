@@ -81,10 +81,12 @@ if __name__ == "__main__":
     step_pin = int(input("Step Pin: "))
     dir_pin = int(input("Direction Pin: "))
     en_pin = int(input("Enable Pin: "))
+    home_pin = int(input("Home Pin: "))
     limit = int(input("Limit: "))
     step_delay = float(input("Step Delay: "))
+    flip_dir = bool(input("Flip Direction: "))
     microstep_mode = int(input("Microstep Mode: "))
-    stepper = Stepper(step_pin, dir_pin, en_pin, limit, step_delay, microstep_mode)
+    stepper = Stepper(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir, microstep_mode)
 
     while(True):
         print(f"Current Position: {stepper.pos}")
