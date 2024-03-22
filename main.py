@@ -40,6 +40,31 @@ def pipette_to_spincoater():
 def suction_to_spincoater():
 	zyx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
 
+def tip_me():
+	'''Gets a tip'''
+	zyx((z,y,x),(300,1308,13),True)
+
+def toss_tip():
+	'''Disposes of a tip'''
+	zyx((z,y,x),(1000,100,900),True)
+	y.go_home()
+	z.up(1400)
+	z.down(1400)
+	y.inward(100)
+
+def demo():
+	tip_me()
+	toss_tip()
+	home()
+
+def home():
+	'''Homes all axes'''
+	if not z.is_home():
+		zyx((z,y,x),(z.limit, y.pos, x.pos),True)
+	x.go_home()
+	y.go_home()
+	z.go_home()
+
 
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
