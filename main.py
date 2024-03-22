@@ -32,7 +32,13 @@ def weigh(uL: int):
 def enter_vial(vial_num: int):
 	#zyx((z,y,x),(4000,3165,470),False)
 	c.move_to_vial(5)
-	zyx((z,y,x),(1600,3165,470),True)
+	zyx((z,y,x),(1600,3165,470),True) #coordinate for vial make this into tuple please
+
+def pipette_to_spincoater():
+	zyx((z,y,x),(2700,4400,525),True) #good enough coords for pipette to spincoater
+
+def suction_to_spincoater():
+	zyx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
 
 
 # Executes whatever commands the user inputs
