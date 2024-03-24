@@ -31,7 +31,6 @@ class Stepper():
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
         self.limit = limit
         self.step_delay = step_delay
-        self.acceleration = 0.0001
         self.flip_dir = flip_dir
         
         # Setup GPIO pins
@@ -48,29 +47,12 @@ class Stepper():
 
     def move_steps(self, steps: int):
         #print(f"Moving {steps} steps")
-        max_delay = 1
-        min_delay = self.step_delay
-        curr_delay = max_delay
-
-        for _ in range(steps/2):
+        for _ in range(steps):
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
 
             GPIO.output(self.step_pin, 0)
-            time.sleep(curr_delay)
-            if curr_delay - self.acceleration > min_delay:
-                curr_delay -+ self.acceleration
-            print(f"Current Delay: {curr_delay}")
-
-        for _ in range(steps/2):
-            GPIO.output(self.step_pin, 1)
-            time.sleep(0.0001)
-
-            GPIO.output(self.step_pin, 0)
-            time.sleep(curr_delay)
-            if curr_delay + self.acceleration < max_delay:
-                curr_delay += self.acceleration
-            print(f"Current Delay: {curr_delay}")
+            time.sleep(self.step_delay)
 
     def is_home(self):
         # Our switches are active low
