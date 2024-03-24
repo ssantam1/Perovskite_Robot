@@ -57,5 +57,9 @@ CAROUSEL_STEP_SLEEP_TIME = 0.0001 #not sure if this gets used but it was in caro
 HOTPLATE_EN_PIN = 7
 
 #Coordinate Constants
-#tba
+PIP_TO_TIP = (300,1308,13)
+PIP_TO_VIAL = (3400,3165,470)
+PIP_TO_SPIN = (2700,400,525)
+SUC_TO_SPIN = (2700,3950,475)
+SUC_TO_HOT = None
 
