@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from drivers.spincoater import SpinCoater
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
     row, column = coords
@@ -85,11 +86,11 @@ def show_window():
     Label(spin_coater_frame, text="#2").grid(row=2, column=0)
     Label(spin_coater_frame, text="#3").grid(row=3, column=0)
 
-    new_entrybox(spin_coater_frame, None, (1,1))
+    step_one_speed = new_entrybox(spin_coater_frame, None, (1,1))
     new_entrybox(spin_coater_frame, None, (2,1))
     new_entrybox(spin_coater_frame, None, (3,1))
 
-    new_entrybox(spin_coater_frame, None, (1,2))
+    step_one_duration = new_entrybox(spin_coater_frame, None, (1,2))
     new_entrybox(spin_coater_frame, None, (2,2))
     new_entrybox(spin_coater_frame, None, (3,2))
 
@@ -133,9 +134,13 @@ def show_window():
 
     #========================================
     #  SUBMIT BUTTON
+    s = SpinCoater()
 
     def submit_inputs():
-        
+        speed = safeInt(step_one_speed.get())
+        duration = safeInt(step_one_duration.get())
+        s.add_step(speed, duration)
+        s.run()
         pass
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
