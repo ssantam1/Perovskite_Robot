@@ -6,9 +6,9 @@ Created by Pierce Alvir and Steven Santamorena
 from drivers.axis import *
 
 # Function for keeping track and performing xyz movement    
-def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple[int, int, int], obstacle_det: bool):
+def go_to(axis: tuple[YAxis, XAxis, ZAxis], coord: tuple[int, int, int], obstacle_det: bool):
     if obstacle_det:
-        zyx(axis, (4000, coord[1], coord[2]), False)
+        axis[2].go_home()
 
     axis_and_coords = [(axis[i], coord[i]) for i in range(len(axis))]
 
@@ -24,7 +24,8 @@ def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple[int, int, int], obstacle_
         
     for i in range(3):
         if (coord[i] > axis[i].limit or coord[i] < 0):
-            print(f"Error")
+            print(f"Error") # Pierce we really need a more descriptive error and also maybe throw an exception
+            exit()
         elif (coord[i] > axis[i].pos):
             print("Going positive")
             axis_temp = coord[i]-axis[i].pos

@@ -24,7 +24,7 @@ class Head(Stepper):
         self.limit = limit if limit else HEAD_LIMIT
         self.step_delay = step_delay if step_delay else HEAD_STEP_DELAY
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.home_pin, self.limit, self.step_delay, self.microstep_mode)
+        super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.home_pin, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
         self.vacuum_pin = HEAD_VACUUM_PIN
         self.max_uL = 200
 
