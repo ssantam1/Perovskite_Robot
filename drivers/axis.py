@@ -53,7 +53,7 @@ class ZAxis(Stepper):
         home_pin = Z_HOME_PIN
         limit = limit if limit else Z_LIMIT
         step_delay = step_delay if step_delay else Z_STEP_DELAY
-        super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir=True, microstep_mode=microstep_mode)
+        super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir=False, microstep_mode=microstep_mode)
 
     def up(self, steps: int):
         self.positive(steps)
