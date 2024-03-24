@@ -1,5 +1,6 @@
 from drivers.axis import *
 from drivers.head import Head
+from drivers.carousel import Carousel
 from functionLib import zyx
 import time
 
@@ -53,13 +54,13 @@ def toss_tip():
 	y.inward(100)
 	
 def retrieve_liquid(uL, vial_num):
-    zyz((z,y,x), (3000,3165,470), True)
+    zyx((z,y,x), (3400,3165,470), True)
     c.move_to_vial(vial_num)
     p.down_uL(p.max_uL)
-    z.down(1400)
+    z.down(1800)
     p.up_uL(uL)
     time.sleep(0.25)
-    z.up(1400)
+    zyx((z,y,x), (3400,3165,470), True)
     
 def home():
 	'''Homes all axes'''
@@ -79,16 +80,16 @@ def main():
 def command_line():
     while True:
         print("Type 'demo()' to run pipette & z-axis demo")
-	cmd = input(">> ")
-	try:
-	    exec(cmd)
-	except Exception as E:
-	    print(f"Error {E}, try again.")
+        cmd = input(">> ")
+        try:
+            exec(cmd)
+        except Exception as E:
+            print(f"Error {E}, try again.")
 
 
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
-    main()
+    command_line()
 
 '''
 help for time stuff
