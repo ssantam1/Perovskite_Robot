@@ -13,19 +13,19 @@ class SpinCoater():
         GPIO.setup(self.enable_pin, GPIO.OUT)
         GPIO.output(self.enable_pin, 1)
 
-        self.spc = self.connect("/dev/ttyACM0")
-        if self.spc is None:
+        self.conn = self.connect("/dev/ttyACM0")
+        if self.conn is None:
             print("Spin coater connection Failed, see exception above.")
             input("Press return to exit...")
             exit()
 
-        data = self.send_and_return("spc set pcmode", self.spc)
+        data = self.send_and_return("spc set pcmode")
         print(f"Board returned: {data}")
         
-        self.delete_steps = "spc del steps"
-        self.add_step_one = "spc add step 5000 10"
-        self.get_steps = "spc get steps"
-        self.start = "spc run"
+        #self.delete_steps = "spc del steps"
+        #self.add_step_one = "spc add step 5000 10"
+        #self.get_steps = "spc get steps"
+        #self.start = "spc run"
 
     # Internal stuff, not intended to be called from outside
 
@@ -42,49 +42,52 @@ class SpinCoater():
             print(E)
             return None
         
-    def send_command(self, command: str, spc_connection: Serial) -> None:
+    def send_command(self, command: str) -> None:
         '''Sends a command to the spin coater board'''
-        spc_connection.write(command.encode("ascii"))
+        self.conn.write(command.encode("ascii"))
 
-    def board_return(self, spc_connection: Serial) -> str:
+    def board_return(self) -> str:
         '''Reads and returns the response from the spin coater board'''
-        return_data = spc_connection.read_all()
+        return_data = self.conn.read_all()
         return_data = return_data.decode('utf-8')
         return return_data
     
-    def send_and_return(self, command: str, spc_connection: Serial) -> str:
+    def send_and_return(self, command: str) -> str:
         '''Sends a command to the spin coater board and returns the response'''
-        self.send_command(command, spc_connection)
+        self.send_command(command)
         time.sleep(0.5)
-        return self.board_return(spc_connection)
+        return self.board_return()
     
     # External API
     
     def add_step(self, rpm: int, time: int) -> str:
         '''Adds a step to the spin coater, returns the response from the board'''
-        return self.send_and_return(f"spc add step {rpm} {time}", self.spc)
+        print("adding step")
+        return self.send_and_return(f"spc add step {rpm} {time}")
     
     def get_steps(self) -> str:
         '''Gets all steps from the spin coater, returns the response from the board'''
-        return self.send_and_return("spc get steps", self.spc)
+        stps = self.send_and_return("spc get steps")
+        print(stps)
+        return stps
 
     def delete_steps(self) -> str:
         '''Deletes all steps from the spin coater, returns the response from the board'''
-        return self.send_and_return("spc del steps", self.spc)
+        return self.send_and_return("spc del steps")
 
     def run(self):
         '''Runs the spin coater'''
-        self.send_and_return("spc run", self.spc)
+        print(self.send_and_return("spc run"))
 
 if __name__ == "__main__":
     spc = SpinCoater()
     while True:
-        cmd = input("SpinCoater>> ")
-        if cmd.lower() == "stop":
+        cmd = "spc."+input("SpinCoater>> ")
+        if cmd.lower() == "spc.stop":
             break
 
         try:
-            exec("spc."+cmd)
+            print(exec(cmd))
         except Exception as E:
             print(f"Error {E}, try again.")
 
