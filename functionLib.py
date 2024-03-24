@@ -36,10 +36,12 @@ def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple[int, int, int], obstacle_
     return axis
 
 # Function for pipette tip pick up
-def tip_on():
+def tip_on(incrementer: int) -> int:
     '''
-    must create a for loop or matrix that can go through the available tips
+    incrementer: stored variable in main file that knows what iteration to set the tip to
+    function returns incrementer number as well
     '''
+    
     zyx((z,y,x),(300,1308,13),True) #replace with constant coord
 
 # Function for pipette tip ejection
