@@ -53,5 +53,9 @@ CAROUSEL_VIAL = 8
 CAROUSEL_STEP_DELAY = 0.006
 CAROUSEL_STEP_SLEEP_TIME = 0.0001 #not sure if this gets used but it was in carousel file
 
+#Hot Plate Constants
+HOTPLATE_EN_PIN = 7
 
+#Coordinate Constants
+#tba
 
