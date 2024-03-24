@@ -1,6 +1,6 @@
 '''
 
-Created by Pierce Alvir and Steven Santamorena hi
+Created by Pierce Alvir and Steven Santamorena
 
 '''
 from drivers.axis import *
@@ -36,9 +36,24 @@ def zyx(axis: tuple[ZAxis, YAxis, XAxis], coord: tuple[int, int, int], obstacle_
     return axis
 
 # Function for pipette tip pick up
+def tip_on():
+    '''
+    must create a for loop or matrix that can go through the available tips
+    '''
+    zyx((z,y,x),(300,1308,13),True) #replace with constant coord
 
 # Function for pipette tip ejection
+def tip_off():
+	'''
+        ejects tip should be same for any time you want to take tip off
 
+        maybe consider washing the tips instead of ejecting
+        '''
+	zyx((z,y,x),(1000,100,900),True)
+	y.go_home()
+	z.up(1400)
+	z.down(1400)
+	y.inward(100)
 # Function for antisolvent pick up
 
 # Function for slide pick up
