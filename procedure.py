@@ -1,18 +1,82 @@
-from drivers.axis import Axis
+from drivers.axis import *
 from drivers.head import Head
-#from drivers.gui import GUI
-from drivers.perovskiteLib import *
+from functionLib import zyx
 import time
 
 #Create tuple constants for XYZ coords for things
 #PICK_UP_COORDS = (x,y,z)
 #Create instances of the objects
-x = Axis(X_STEP_PIN,X_DIR_PIN,X_EN_PIN,X_LIMIT,X_MOTOR_VAR)
-y = Axis(Y_STEP_PIN,Y_DIR_PIN,Y_EN_PIN,Y_LIMIT,Y_MOTOR_VAR)
-z = Axis(Z_STEP_PIN,Z_DIR_PIN,Z_EN_PIN,Z_LIMIT,Z_MOTOR_VAR)
+x = XAxis()
+y = YAxis()
+z = ZAxis()
 p = Head()
+c = Carousel()
 
+def weigh(uL: int):
+	p.down_uL(p.max_uL) #Empty air from pipette
+	z.down(1500) #Lower pipette into vial
+	p.up_uL(uL) #Fill pipette with fluid
+	time.sleep(0.25)
+	z.up(1500) #Raise pipette above vial again
+	
+	x.right(200)
+	z.down(1500)
+	
+	p.down_uL(uL)
+	time.sleep(0.5)
+	p.up_uL(p.max_uL)
+	
+	z.up(1500)
+	x.left(200)
+
+def enter_vial(vial_num: int):
+	#zyx((z,y,x),(4000,3165,470),False)
+	c.move_to_vial(vial_num)
+	zyx((z,y,x),(1600,3165,470),True) #coordinate for vial make this into tuple please
+
+def pipette_to_spincoater():
+	zyx((z,y,x),(2700,4400,525),True) #good enough coords for pipette to spincoater
+
+def suction_to_spincoater():
+	zyx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
+
+def tip_me():
+	'''Gets a tip'''
+	zyx((z,y,x),(300,1308,13),True)
+
+def toss_tip():
+	'''Disposes of a tip'''
+	zyx((z,y,x),(1000,100,900),True)
+	y.go_home()
+	z.up(1400)
+	z.down(1400)
+	y.inward(100)
+	
+def retrieve_liquid(uL, vial_num):
+    zyz((z,y,x), (3000,3165,470), True)
+    c.move_to_vial(vial_num)
+    p.down_uL(p.max_uL)
+    z.down(1400)
+    p.up_uL(uL)
+    time.sleep(0.25)
+    z.up(1400)
+    
+def home():
+	'''Homes all axes'''
+	if not z.is_home():
+		zyx((z,y,x),(z.limit, y.pos, x.pos),True)
+	x.go_home()
+	y.go_home()
+	z.go_home()
+	
 def main():
+    tip_me()
+    retrieve_liquid(100,5)
+    toss_tip()
+    y.inward(200)
+    home()
+    
+def command_line():
     while True:
         print("Type 'demo()' to run pipette & z-axis demo")
 	cmd = input(">> ")
