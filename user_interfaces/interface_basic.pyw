@@ -131,6 +131,15 @@ def show_window():
     Label(master, text="Antisolvent", font="Default 13", relief=GROOVE).grid(column=1, row=2)
     desolvent_frame.grid(column=1, row=3, padx=5, pady=5, sticky=NS)
 
+    #========================================
+    #  SUBMIT BUTTON
+
+    def submit_inputs():
+        pass
+
+    submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
+    submit_button.grid(column=0, columnspan=2, row=4, padx=10, pady=10)
+
     master.pack(expand=1, fill="both")
 
     root.mainloop()
