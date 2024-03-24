@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from drivers.spincoater import SpinCoater
+from drivers.hotplate import HotPlate
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
     row, column = coords
@@ -87,12 +88,12 @@ def show_window():
     Label(spin_coater_frame, text="#3").grid(row=3, column=0)
 
     step_one_speed = new_entrybox(spin_coater_frame, None, (1,1))
-    new_entrybox(spin_coater_frame, None, (2,1))
-    new_entrybox(spin_coater_frame, None, (3,1))
+    step_two_speed = new_entrybox(spin_coater_frame, None, (2,1))
+    step_thr_speed = new_entrybox(spin_coater_frame, None, (3,1))
 
     step_one_duration = new_entrybox(spin_coater_frame, None, (1,2))
-    new_entrybox(spin_coater_frame, None, (2,2))
-    new_entrybox(spin_coater_frame, None, (3,2))
+    step_two_duration = new_entrybox(spin_coater_frame, None, (2,2))
+    step_thr_duration = new_entrybox(spin_coater_frame, None, (3,2))
 
     Label(master, text="Spin Coater Steps", font="Default 13", relief=GROOVE).grid(column=1, row=0)
     spin_coater_frame.grid(column=1, row=1, padx=5, pady=5, sticky=NS)
@@ -134,14 +135,17 @@ def show_window():
 
     #========================================
     #  SUBMIT BUTTON
-    s = SpinCoater()
+    params: dict = {}
 
     def submit_inputs():
-        speed = safeInt(step_one_speed.get())
-        duration = safeInt(step_one_duration.get())
-        s.add_step(speed, duration)
-        s.run()
-        pass
+        params["spin_step_one"] = ( safeInt(step_one_speed.get()), safeInt(step_one_duration.get()) )
+        params["spin_step_two"] = ( safeInt(step_two_speed.get()), safeInt(step_two_duration.get()) )
+        params["spin_step_thr"] = ( safeInt(step_thr_speed.get()), safeInt(step_thr_duration.get()) )
+
+        params["bake_time"] = safeInt(bake_time_entry.get())
+        params["bake_temp"] = safeInt(bake_temp_entry.get())
+        
+        print(params)
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
     submit_button.grid(column=0, columnspan=2, row=4, padx=10, pady=10)
