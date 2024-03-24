@@ -135,6 +135,7 @@ def show_window():
     #  SUBMIT BUTTON
 
     def submit_inputs():
+        
         pass
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
