@@ -59,7 +59,7 @@ def retrieve_liquid(uL, vial_num):
     p.down_uL(p.max_uL)
     z.down(1800)
     p.up_uL(uL)
-    time.sleep(0.25)
+    time.sleep(0.25)zyx((z,y,x), (3400,3165,470), True)
     zyx((z,y,x), (3400,3165,470), True)
     
 def home():

@@ -48,18 +48,19 @@ class Stepper():
 
     def move_steps(self, steps: int):
         #print(f"Moving {steps} steps")
-        max_delay = 1
+        max_delay = float(0.001)
         min_delay = self.step_delay
         curr_delay = max_delay
 
-        for _ in range(steps/2):
+        for _ in range(int(steps/2)):
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
 
             GPIO.output(self.step_pin, 0)
             time.sleep(curr_delay)
-            if curr_delay - self.acceleration > min_delay:
-                curr_delay -+ self.acceleration
+            print(f"curr_delay - acc: {float(curr_delay - self.acceleration)}, min_delay: {float(min_delay)}")
+            if float(curr_delay - self.acceleration) > float(min_delay):
+                curr_delay -= self.acceleration
             print(f"Current Delay: {curr_delay}")
 
         for _ in range(steps/2):
