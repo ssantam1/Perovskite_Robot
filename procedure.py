@@ -35,12 +35,6 @@ def enter_vial(vial_num: int):
 	c.move_to_vial(vial_num)
 	zyx((z,y,x),(1600,3165,470),True) #coordinate for vial make this into tuple please
 
-def pipette_to_spincoater():
-	zyx((z,y,x),(2700,4400,525),True) #good enough coords for pipette to spincoater
-
-def suction_to_spincoater():
-	zyx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
-
 def tip_me():
 	'''Gets a tip'''
 	zyx((z,y,x),(300,1308,13),True)
