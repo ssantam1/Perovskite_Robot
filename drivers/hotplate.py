@@ -21,15 +21,16 @@ class HotPlate():
         GPIO.setup(self.en_pin, GPIO.OUT)
     
     def hot_on(self): #not sure if on is output high or low 
-        GPIO.output(self.en_pin,0)
+        GPIO.output(self.en_pin,1)
 
     def hot_off(self):
-        GPIO.output(self.en_pin,1)
+        GPIO.output(self.en_pin,0)
 
     def anneal(self, seconds_time: int): #we can rename the time variable
         start_time = time.perf_counter()
-        while(seconds_time != current_time):
-            hot_on()
+        current_time = 0
+        hot_on()
+        while(current_time < seconds_time):
             current_time = time.perf_counter()-start_time
         hot_off()
 
