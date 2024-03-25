@@ -39,6 +39,31 @@ class Carousel(Stepper):
         step_delay = step_delay if step_delay else CAROUSEL_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, microstep_mode)
 
+    def step(self):
+        '''Takes a step'''
+        GPIO.output(self.step_pin, 1)
+        time.sleep(0.0001)
+        GPIO.output(self.step_pin, 0)
+
+    def move_steps(self, steps: int):
+        acceleration_steps = steps // 2
+        current_speed = 0
+        acceleration_rate = self.step_delay / acceleration_steps
+
+        for _ in range(acceleration_steps):
+            self.step()
+            time.sleep(self.step_delay - current_speed)
+            current_speed += acceleration_rate
+
+        for _ in range(steps - acceleration_steps * 2):
+            self.step()
+            time.sleep(self.step_delay)
+
+        for _ in range(acceleration_steps):
+            self.step()
+            time.sleep(self.step_delay - current_speed)
+            current_speed -= acceleration_rate
+
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:
         '''Moves the carousel to a desired vial and, sleeps for 3 seconds, and returns to original position'''
