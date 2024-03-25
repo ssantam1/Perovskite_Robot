@@ -19,14 +19,14 @@ g = Gantry(y,x,z)
 p = Head()
 c = Carousel()
 
-def extract(uL: int):
+def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
 	z.down(1500) #Lower pipette into vial
 	p.up_uL(uL) #Fill pipette with fluid
 	time.sleep(0.25)
 	z.up(1500) #Raise pipette above vial again
 	
-def weigh(uL: int):
+def weigh(uL: int): #can we remove this or put it in unused folder?
 	extract(uL)
 	
 	x.right(200)
@@ -39,14 +39,13 @@ def weigh(uL: int):
 	z.up(1500)
 	x.left(200)
 
-def go_to_vial():
+def go_to_vial(): 
 	g.go_to((3150,435,664),True)
 
-def pipette_to_spincoater():
+def pipette_to_spincoater(): 
 	g.go_to((4400,522,1670),True)
 
-def suction_to_spincoater():
-	#yx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
+def suction_to_spincoater(): 
 	g.go_to((3751,522,1670),True)
 
 def tip_on():
@@ -67,8 +66,9 @@ def retrieve_liquid(uL, vial_num):
     c.move_to_vial(vial_num)
     extract(uL)
 
-def demo():
-	tip_on()
+def demo(): #this is a carousel stage basically
+	tip_on() 
+	retrieve_liquid(100,2) #we get the uL from GUI but we need a vial dictionary for each labeled vial whatever GUI asks for
 	tip_off()
 	home()
 
