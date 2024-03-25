@@ -1,3 +1,9 @@
+'''
+
+Procedure Generation File
+Created by Pierce Alvir and Steven Santamorena
+
+'''
 from drivers.axis import *
 from drivers.head import Head
 from drivers.carousel import Carousel
@@ -11,6 +17,40 @@ y = YAxis()
 z = ZAxis()
 p = Head()
 c = Carousel()
+
+# Function for keeping track and performing xyz movement    
+def go_to(axis: tuple[YAxis, XAxis, ZAxis], coord: tuple[int, int, int], obstacle_det: bool):
+	'''
+	Need to rewrite to have this function have axes already used in it
+	'''
+	if obstacle_det:
+        axis[2].go_home()
+
+    axis_and_coords = [(axis[i], coord[i]) for i in range(len(axis))]
+
+    '''
+    (axis[1], coord[1]),
+    (axis[2], coord[2]),
+    (axis[3], coord[3])
+
+    for (a, c) in axis_and_coords:
+        a.positive(c)
+        
+    '''
+        
+    for i in range(3):
+        if (coord[i] > axis[i].limit or coord[i] < 0):
+            print(f"Error") # Pierce we really need a more descriptive error and also maybe throw an exception
+            exit()
+        elif (coord[i] > axis[i].pos):
+            print("Going positive")
+            axis_temp = coord[i]-axis[i].pos
+            axis[i].positive(axis_temp)
+        else:
+            print("Going negative")
+            axis_temp = axis[i].pos-coord[i]
+            axis[i].negative(axis_temp)
+    return axis
 
 def extract(uL: int):
 	p.down_uL(p.max_uL) #Empty air from pipette
