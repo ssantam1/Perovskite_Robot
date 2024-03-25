@@ -9,7 +9,7 @@ Created by Pierce Alvir and Steven Santamorena
 X_STEP_PIN = 18
 X_DIR_PIN = 23
 X_EN_PIN = 24
-X_HOME_PIN = 2
+X_HOME_PIN = 4
 X_LIMIT = 1200
 X_STEP_DELAY = 0.001
 
@@ -17,7 +17,7 @@ X_STEP_DELAY = 0.001
 Y_STEP_PIN = 12
 Y_DIR_PIN = 5
 Y_EN_PIN = 6
-Y_HOME_PIN = 4
+Y_HOME_PIN = 2
 Y_LIMIT = 4800
 Y_STEP_DELAY = 0.002
 
