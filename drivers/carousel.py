@@ -45,6 +45,7 @@ class Carousel(Stepper):
         time.sleep(0.0001)
         GPIO.output(self.step_pin, 0)
 
+    '''
     def move_steps(self, steps: int):
         acceleration_steps = steps // 2
         current_speed = 0
@@ -62,7 +63,7 @@ class Carousel(Stepper):
         for _ in range(acceleration_steps):
             self.step()
             time.sleep(self.step_delay - current_speed)
-            current_speed -= acceleration_rate
+            current_speed -= acceleration_rate'''
 
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:
