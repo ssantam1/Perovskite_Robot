@@ -60,3 +60,7 @@ class ZAxis(Stepper):
 
     def down(self, steps: int):
         self.positive(steps)
+
+class Gantry(x: XAxis, y: YAxis, z:Axis):
+    def __init__(self):
+        self.x
