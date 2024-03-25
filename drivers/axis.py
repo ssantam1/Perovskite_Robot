@@ -61,6 +61,45 @@ class ZAxis(Stepper):
     def down(self, steps: int):
         self.positive(steps)
 
-class Gantry(x: XAxis, y: YAxis, z:Axis):
+class Gantry(y: YAxis, x: XAxis, z: ZAxis):
     def __init__(self):
-        self.x
+        self.x = x
+        self.y = y
+        self.z = z
+    
+    # Function for keeping track and performing xyz movement    
+    def go_to(coord: tuple[int, int, int], obstacle_det: bool):
+        '''
+        coord: take in the coordinated desired via yxz
+        obstacle_det: avoid any obstacles
+        '''
+        axis = (y,x,z)
+
+        if obstacle_det:
+            axis[2].go_home()
+
+        axis_and_coords = [(axis[i], coord[i]) for i in range(len(axis))]
+
+        '''
+        (axis[1], coord[1]),
+        (axis[2], coord[2]),
+        (axis[3], coord[3])
+
+        for (a, c) in axis_and_coords:
+            a.positive(c)
+            
+        '''
+            
+        for i in range(3):
+            if (coord[i] > axis[i].limit or coord[i] < 0):
+                print(f"Error") # Pierce we really need a more descriptive error and also maybe throw an exception
+                exit()
+            elif (coord[i] > axis[i].pos):
+                print("Going positive")
+                axis_temp = coord[i]-axis[i].pos
+                axis[i].positive(axis_temp)
+            else:
+                print("Going negative")
+                axis_temp = axis[i].pos-coord[i]
+                axis[i].negative(axis_temp)
+        return axis
