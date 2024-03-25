@@ -26,10 +26,6 @@ from constants import *
 class Carousel(Stepper):
     '''Class that represents the carousel inside the Perovskite Synthesis System'''
 
-    steps_per_rev = 200 # Number of steps per revolution on stepper motor
-    num_vials = 8 # Number of vials/slots in the carousel
-    step_sleep_time = 0.0001 # Time to sleep in between turning on and off GPIO for steps
-
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = CAROUSEL_STEP_PIN
         dir_pin = CAROUSEL_DIR_PIN
@@ -39,31 +35,12 @@ class Carousel(Stepper):
         step_delay = step_delay if step_delay else CAROUSEL_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, microstep_mode)
 
-    def step(self):
-        '''Takes a step'''
-        GPIO.output(self.step_pin, 1)
-        time.sleep(0.0001)
-        GPIO.output(self.step_pin, 0)
+        self.steps_per_rev = 200 # Number of steps per revolution on stepper motor
+        self.num_vials = 8 # Number of vials/slots in the carousel
+        self.current_vial = 1
 
-    '''
-    def move_steps(self, steps: int):
-        acceleration_steps = steps // 2
-        current_speed = 0
-        acceleration_rate = self.step_delay / acceleration_steps
-
-        for _ in range(acceleration_steps):
-            self.step()
-            time.sleep(self.step_delay - current_speed)
-            current_speed += acceleration_rate
-
-        for _ in range(steps - acceleration_steps * 2):
-            self.step()
-            time.sleep(self.step_delay)
-
-        for _ in range(acceleration_steps):
-            self.step()
-            time.sleep(self.step_delay - current_speed)
-            current_speed -= acceleration_rate'''
+    def reset_vial(self):
+        self.current_vial = 1
 
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, vial_position: int) -> None:
@@ -75,6 +52,7 @@ class Carousel(Stepper):
         print("swapping dir to 1")
         GPIO.output(self.dir_pin,1)
         self.move_steps(steps_to_move)
+        self.current_vial = vial_position
 
     # Define a function to handle user input and move the carousel to the desired vials
     def move_to_vials(self):
