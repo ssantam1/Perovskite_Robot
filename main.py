@@ -24,6 +24,7 @@ c = Carousel()
 s = SpinCoater()
 h = HotPlate()
 
+# Functions to either get rid of or move
 def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
 	z.down(1500) #Lower pipette into vial
@@ -44,18 +45,16 @@ def weigh(uL: int): #can we remove this or put it in unused folder?
 	z.up(1500)
 	x.left(200)
 
-def go_to_vial(): 
-	g.go_to((3150,435,664),True)
-
-def pipette_to_spincoater(): 
-	g.go_to((4400,522,1670),True)
-
-def suction_to_spincoater(): 
-	g.go_to((3751,522,1670),True)
-
-def tip_on():
-	'''Gets a tip'''
-	g.go_to((1285,13,3773),True)
+# Functions for Pipette Tip
+def tip_on(incrementer: int) -> int:
+    '''
+	must work on this to use incrementer variable and go through multiple tips
+    incrementer: stored variable in main file that knows what iteration to set the tip to
+    function returns incrementer number as well
+    '''
+    y_coord, x_coord, z_coord = PIP_TO_TIP
+    
+    g.go_to((1285,13,3773),True)
 
 def tip_off():
 	'''Disposes of a tip'''
@@ -66,8 +65,9 @@ def tip_off():
 	z.down(1400)
 	y.inward(100)
 
-def slide_pickup():
-	pass
+# Functions for Carousel Stage
+def go_to_vial(): 
+	g.go_to((3150,435,664),True)
 
 def retrieve_liquid(uL, vial_num):
     go_to_vial()
@@ -80,14 +80,30 @@ def carousel_stage(): #this is a carousel stage basically
 	tip_off()
 	g.home()
 
-def spincoater_stage():
+# Functions for Spin Coater Stage
+def pipette_to_spincoater(): 
+	g.go_to((4400,522,1670),True)
+
+def suction_to_spincoater(): 
+	g.go_to((3751,522,1670),True)
+
+def slide_pickup():
 	pass
 
+def slide_dropoff():
+	pass
+
+def spincoater_stage():
+	slide_pickup() #go pick up slide
+	slide_dropoff() #put slide in spin coater
+
+
+
+# Tip on and off demo
 def demo():
 	tip_on()
 	tip_off()
 	g.home()
-
 
 
 # Executes whatever commands the user inputs
