@@ -25,10 +25,10 @@ h = HotPlate()
 # Functions to either get rid of or move
 def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
-	z.down(1500) #Lower pipette into vial
+	z.down(1600) #Lower pipette into vial
 	p.up_uL(uL) #Fill pipette with fluid
 	time.sleep(0.25)
-	z.up(1500) #Raise pipette above vial again
+	z.up(1600) #Raise pipette above vial again
 
 def dispense(uL: int):
 	p.down_uL(uL)
@@ -57,7 +57,7 @@ def tip_off():
 
 # Functions for Carousel Stage
 def go_to_vial(): 
-	g.go_to((3150,440,664),True)
+	g.go_to((3150,450,664),True)
 
 def extract_vial(uL, vial_num):
     go_to_vial()
@@ -66,7 +66,7 @@ def extract_vial(uL, vial_num):
 
 def dispense_vial(uL, vial_num):
 	go_to_vial()
-	c.move_to_vial()
+	c.move_to_vial(vial_num)
 	dispense(uL)
 
 def carousel_stage(): #this is a carousel stage basically
