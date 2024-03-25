@@ -59,12 +59,12 @@ def tip_off():
 def go_to_vial(): 
 	g.go_to((3150,440,664),True)
 
-def extract_liquid(uL, vial_num):
+def extract_vial(uL, vial_num):
     go_to_vial()
     c.move_to_vial(vial_num)
     extract(uL)
 
-def dispense_liquid(uL, vial_num):
+def dispense_vial(uL, vial_num):
 	go_to_vial()
 	c.move_to_vial()
 	dispense(uL)
