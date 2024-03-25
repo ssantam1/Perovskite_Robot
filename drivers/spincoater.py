@@ -2,13 +2,14 @@ from serial import Serial, SerialException
 import time
 import board
 import RPi.GPIO as GPIO
+from constants import *
 
 class SpinCoater():
     '''Class that represents the spin coater inside the Perovskite Synthesis System'''
 
     def __init__(self):
         '''Constructs spin coater object, configures GPIO pins'''
-        self.enable_pin = 8
+        self.enable_pin = SPINCOATER_EN_PIN
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.enable_pin, GPIO.OUT)
         GPIO.output(self.enable_pin, 1)

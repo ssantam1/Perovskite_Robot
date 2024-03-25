@@ -56,6 +56,9 @@ CAROUSEL_STEP_SLEEP_TIME = 0.0001 #not sure if this gets used but it was in caro
 #Hot Plate Constants
 HOTPLATE_EN_PIN = 7
 
+#Spin Coater Constants
+SPINCOATER_EN_PIN = 8
+
 #Coordinate Constants
 PIP_TO_TIP = (1285,13,3773)
 PIP_TO_VIAL = (3150,435,664)
