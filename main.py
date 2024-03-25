@@ -9,7 +9,6 @@ from drivers.head import Head
 from drivers.carousel import Carousel
 from drivers.spincoater import SpinCoater
 from drivers.hotplate import HotPlate
-from functionLib import *
 from test_vacuum_pump import *
 import time
 
