@@ -61,19 +61,19 @@ class ZAxis(Stepper):
     def down(self, steps: int):
         self.positive(steps)
 
-class Gantry(y: YAxis, x: XAxis, z: ZAxis):
-    def __init__(self):
+class Gantry():
+    def __init__(self, y: YAxis, x: XAxis, z: ZAxis):
         self.x = x
         self.y = y
         self.z = z
     
     # Function for keeping track and performing xyz movement    
-    def go_to(coord: tuple[int, int, int], obstacle_det: bool):
+    def go_to(self, coord: tuple[int, int, int], obstacle_det: bool):
         '''
         coord: take in the coordinated desired via yxz
         obstacle_det: avoid any obstacles
         '''
-        axis = (y,x,z)
+        axis = (self.y,self.x,self.z)
 
         if obstacle_det:
             axis[2].go_home()
