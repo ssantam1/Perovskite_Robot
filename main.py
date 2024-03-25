@@ -9,7 +9,6 @@ from drivers.head import Head
 from drivers.carousel import Carousel
 from drivers.spincoater import SpinCoater
 from drivers.hotplate import HotPlate
-from test_vacuum_pump import *
 import time
 
 # Create instances of the objects 
@@ -92,11 +91,20 @@ def slide_pickup():
 def slide_dropoff():
 	pass
 
+def demo_spincoater_connection(): #one of our requirements
+	s.add_step(1000,20)
+	s.run()
+
 def spincoater_stage():
 	slide_pickup() #go pick up slide
 	slide_dropoff() #put slide in spin coater
-
-
+	s.add_step(1000,20) #add all steps early on
+	#put liquid on slide
+	#pick up antisolvent
+	#put pipette above slide on spincoater
+	#start an antisolvent timer function to dispense at correct time
+	s.run() #start run with antisolvent timer 
+	#pick up slide when done
 
 # Tip on and off demo
 def demo():
