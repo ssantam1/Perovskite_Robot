@@ -30,6 +30,11 @@ def extract(uL: int): #put in pipette head?
 	time.sleep(0.25)
 	z.up(1500) #Raise pipette above vial again
 
+def dispense(uL: int):
+	p.down_uL(uL)
+	time.sleep(0.5)
+	p.up_uL(p.max_uL)
+
 # Functions for Pipette Tip
 def tip_on(incrementer: int) -> int:
     '''
@@ -54,10 +59,15 @@ def tip_off():
 def go_to_vial(): 
 	g.go_to((3150,435,664),True)
 
-def retrieve_liquid(uL, vial_num):
+def extract_liquid(uL, vial_num):
     go_to_vial()
     c.move_to_vial(vial_num)
     extract(uL)
+
+def dispense_liquid(uL, vial_num):
+	go_to_vial()
+	c.move_to_vial()
+	dispense(uL)
 
 def carousel_stage(): #this is a carousel stage basically
 	tip_on() 
