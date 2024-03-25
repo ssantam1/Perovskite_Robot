@@ -29,19 +29,6 @@ def extract(uL: int): #put in pipette head?
 	p.up_uL(uL) #Fill pipette with fluid
 	time.sleep(0.25)
 	z.up(1500) #Raise pipette above vial again
-	
-def weigh(uL: int): #can we remove this or put it in unused folder?
-	extract(uL)
-	
-	x.right(200)
-	z.down(1500)
-	
-	p.down_uL(uL)
-	time.sleep(0.5)
-	p.up_uL(p.max_uL)
-	
-	z.up(1500)
-	x.left(200)
 
 # Functions for Pipette Tip
 def tip_on(incrementer: int) -> int:
