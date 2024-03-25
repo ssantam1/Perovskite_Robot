@@ -19,7 +19,7 @@ z = ZAxis()
 g = Gantry(y,x,z)
 p = Head()
 c = Carousel()
-s = SpinCoater()
+#s = SpinCoater()
 h = HotPlate()
 
 # Functions to either get rid of or move
@@ -39,20 +39,20 @@ def tip_on(incrementer: int) -> int:
     '''
     y_coord, x_coord, z_coord = PIP_TO_TIP
     
-    g.go_to((1285,13,3773),True)
+    g.go_to((1310,7,3765),True)
 
 def tip_off():
 	'''Disposes of a tip'''
-	g.go_to((100,900,3000),True)
+	g.go_to((100,900,2500),True)
 	y.go_home()
-	z.up(1400)
+	z.up(900)
 	time.sleep(0.1)
-	z.down(1400)
+	z.down(900)
 	y.inward(100)
 
 # Functions for Carousel Stage
 def go_to_vial(): 
-	g.go_to((3150,435,664),True)
+	g.go_to((3150,440,664),True)
 
 def retrieve_liquid(uL, vial_num):
     go_to_vial()
