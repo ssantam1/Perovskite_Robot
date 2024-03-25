@@ -42,11 +42,11 @@ def suction_to_spincoater():
 	#yx((z,y,x),(2700,3950,475),True) #good enough coords for suction to spincoater
 	go_to((y,x,z),(3751,522,1670),True)
 
-def tip_me():
+def tip_on():
 	'''Gets a tip'''
 	go_to((y,x,z),(1285,13,3773),True)
 
-def toss_tip():
+def tip_off():
 	'''Disposes of a tip'''
 	go_to((y,x,z),(100,900,3000),True)
 	y.go_home()
@@ -61,8 +61,8 @@ def retrieve_liquid(uL, vial_num):
     extract(uL)
 
 def demo():
-	tip_me()
-	toss_tip()
+	tip_on()
+	toss_off()
 	home()
 
 def home():
