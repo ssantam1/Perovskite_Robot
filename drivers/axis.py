@@ -103,3 +103,11 @@ class Gantry():
                 axis_temp = axis[i].pos-coord[i]
                 axis[i].negative(axis_temp)
         return axis
+    
+    def home(self):
+        '''
+        Homes all axes
+        '''
+        self.z.go_home()
+        self.x.go_home()
+        self.y.go_home()
