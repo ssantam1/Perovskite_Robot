@@ -7,17 +7,22 @@ Created by Pierce Alvir and Steven Santamorena
 from drivers.axis import *
 from drivers.head import Head
 from drivers.carousel import Carousel
+from drivers.spincoater import SpinCoater
+from drivers.hotplate import HotPlate
 from functionLib import *
 from test_vacuum_pump import *
 import time
 
-# Create instances of the objects
+# Create instances of the objects 
+#maybe rename these from single letters at some point
 x = XAxis()
 y = YAxis()
 z = ZAxis()
 g = Gantry(y,x,z)
 p = Head()
 c = Carousel()
+s = SpinCoater()
+h = HotPlate()
 
 def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
@@ -61,22 +66,29 @@ def tip_off():
 	z.down(1400)
 	y.inward(100)
 
+def slide_pickup():
+	pass
+
 def retrieve_liquid(uL, vial_num):
     go_to_vial()
     c.move_to_vial(vial_num)
     extract(uL)
 
-def demo(): #this is a carousel stage basically
+def carousel_stage(): #this is a carousel stage basically
 	tip_on() 
 	retrieve_liquid(100,2) #we get the uL from GUI but we need a vial dictionary for each labeled vial whatever GUI asks for
 	tip_off()
-	home()
+	g.home()
 
-def home():
-	'''Homes all axes'''
-	z.go_home()
-	x.go_home()
-	y.go_home()
+def spincoater_stage():
+	pass
+
+def demo():
+	tip_on()
+	tip_off()
+	g.home()
+
+
 
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
