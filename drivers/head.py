@@ -26,8 +26,7 @@ class Head(Stepper):
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
         super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.home_pin, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
         self.vacuum_pin = HEAD_VACUUM_PIN
-        self.max_uL = 200
-
+        self.max_uL = HEAD_MAX_UL
 
     def down(self, steps: int):
         '''Moves the pipette plunger down a number of steps'''
