@@ -69,7 +69,7 @@ def retrieve_liquid(uL, vial_num):
 
 def demo():
 	tip_on()
-	toss_off()
+	tip_off()
 	home()
 
 def home():
