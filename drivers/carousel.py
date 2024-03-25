@@ -43,16 +43,31 @@ class Carousel(Stepper):
         self.current_vial = 1
 
     # Define a method to move the carousel to a given vial
-    def move_to_vial(self, vial_position: int) -> None:
+    def move_to_vial(self, target_vial: int) -> None:
         '''Moves the carousel to a desired vial and, sleeps for 3 seconds, and returns to original position'''
         # Calculate the number of steps needed to move to the desired vial
-        steps_to_move = int(((vial_position-1) / self.num_vials) * (self.steps_per_rev))
+        if target_vial < 1 or target_vial > self.num_vials:
+            raise Exception("Vial numbers must be non-negative and not exceed num_vials-1")
+    
+        steps_to_move = int(abs(target_vial - self.current_vial) * (self.steps_per_rev / self.num_vials))
 
+        # x  1  2  3  4  5  6  7  8
+        # 1  0  1  2  3  4  5  6  7
+        # 2 -7  0  1  2  3  4  5  6
+        # 3 -6 -7  0  1  2  3  4  5
+        # 4 -5 -6 -7  0  1  2  3  4
+        # 5 -4 -5 -6 -7  0  1  2  3
+        # 6 -3 -4 -5 -6 -7  0  1  2
+        # 7 -2 -3 -4 -5 -6 -7  0  1
+ 
         # Move the stepper motor to the desired position
-        print("swapping dir to 1")
-        GPIO.output(self.dir_pin,1)
+        if target_vial > self.current_vial:
+            GPIO.output(self.dir_pin,1)
+        else:
+            GPIO.output(self.dir_pin,0)
+            
         self.move_steps(steps_to_move)
-        self.current_vial = vial_position
+        self.current_vial = target_vial
 
     # Define a function to handle user input and move the carousel to the desired vials
     def move_to_vials(self):
