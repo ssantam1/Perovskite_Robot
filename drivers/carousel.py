@@ -25,79 +25,42 @@ from constants import *
 
 class Carousel(Stepper):
     '''Class that represents the carousel inside the Perovskite Synthesis System'''
-
-    steps_per_rev = 200 # Number of steps per revolution on stepper motor
-    num_vials = 8 # Number of vials/slots in the carousel
-    step_sleep_time = 0.0001 # Time to sleep in between turning on and off GPIO for steps
-
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
-        step_pin = CAROUSEL_STEP_PIN
-        dir_pin = CAROUSEL_DIR_PIN
-        en_pin = CAROUSEL_EN_PIN
-        home_pin = None
-        limit = limit if limit else 1200 #random limit that i am putting
+        '''Initializes the carousel stepper motor'''
+        limit = limit if limit else 99999 # arbitrary limit that is never reached
         step_delay = step_delay if step_delay else CAROUSEL_STEP_DELAY
-        super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, microstep_mode)
+        super().__init__(CAROUSEL_STEP_PIN, CAROUSEL_DIR_PIN, CAROUSEL_EN_PIN, CAROUSEL_HOME_PIN, limit, step_delay, microstep_mode)
 
-    def step(self):
-        '''Takes a step'''
-        GPIO.output(self.step_pin, 1)
-        time.sleep(0.0001)
-        GPIO.output(self.step_pin, 0)
+        self.steps_per_rev = 200 # Number of steps per revolution on stepper motor
+        self.num_vials = 8 # Number of vials/slots in the carousel
+        self.current_vial = 1 # Current vial the carousel is at
 
-    '''
-    def move_steps(self, steps: int):
-        acceleration_steps = steps // 2
-        current_speed = 0
-        acceleration_rate = self.step_delay / acceleration_steps
-
-        for _ in range(acceleration_steps):
-            self.step()
-            time.sleep(self.step_delay - current_speed)
-            current_speed += acceleration_rate
-
-        for _ in range(steps - acceleration_steps * 2):
-            self.step()
-            time.sleep(self.step_delay)
-
-        for _ in range(acceleration_steps):
-            self.step()
-            time.sleep(self.step_delay - current_speed)
-            current_speed -= acceleration_rate'''
+    def reset_vial(self):
+        '''Tell the carousel that it is at vial 1'''
+        # This is mainly so I can do tests withou turning everything off and on again
+        self.current_vial = 1
 
     # Define a method to move the carousel to a given vial
-    def move_to_vial(self, vial_position: int) -> None:
+    def move_to_vial(self, target_vial: int) -> None:
         '''Moves the carousel to a desired vial and, sleeps for 3 seconds, and returns to original position'''
-        # Calculate the number of steps needed to move to the desired vial
-        steps_to_move = int(((vial_position-1) / self.num_vials) * (self.steps_per_rev))
+        # Check if the target vial is within the bounds of the carousel
+        if target_vial < 1 or target_vial > self.num_vials:
+            raise Exception("Vial numbers must be non-negative and not exceed num_vials-1")
 
-        # Move the stepper motor to the desired position
-        print("swapping dir to 1")
-        GPIO.output(self.dir_pin,1)
+        # Calculate the number of steps needed to move to the desired vial    
+        steps_to_move = int(abs(target_vial - self.current_vial) * (self.steps_per_rev / self.num_vials))
+ 
+        # Set the direction of the motor based on the target vial
+        if target_vial > self.current_vial:
+            GPIO.output(self.dir_pin,1)
+        else:
+            GPIO.output(self.dir_pin,0)
+
+        # Move the motor to the target vial
         self.move_steps(steps_to_move)
-
-    # Define a function to handle user input and move the carousel to the desired vials
-    def move_to_vials(self):
-        '''Takes input sequence from user and calls move_to_vial() for each item'''
-        # Prompt the user for the desired vials
-        vial_sequence: str = input('Enter the desired vials in order (e.g. 1,3,5): ')
-
-        # Split the user input into individual vials
-        vials: list[str] = vial_sequence.split(',')
-
-        # Move the carousel to each desired vial in turn
-        for vial in vials:
-            vial = int(vial)
-
-            # Raise exception if a vial number is too high or too low
-            if vial < 0 or vial > self.num_vials:
-                raise Exception("Vial numbers must be non-negative and not exceed num_vials-1")
-            
-            # Begin rotating carousel
-            self.move_to_vial(vial)
-            time.sleep(1)
+        self.current_vial = target_vial
 
 if __name__ == "__main__":
     c = Carousel()
     while(True):
-        c.move_to_vials()
+        c.move_to_vial(int(input("Enter a vial number: ")))
