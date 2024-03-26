@@ -60,6 +60,7 @@ class Head(Stepper):
     def empty(self):
         '''Empties the pipette of any fluid'''
         self.down_uL(self.current_uL)
+        time.sleep(0.2)
         self.up_uL(self.max_uL)
     
     # Suction cup functions

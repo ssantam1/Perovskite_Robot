@@ -19,7 +19,7 @@ z = ZAxis()
 g = Gantry(y,x,z)
 p = Head()
 c = Carousel()
-#s = SpinCoater()
+s = SpinCoater()
 h = HotPlate()
 
 # Functions to either get rid of or move
@@ -29,11 +29,6 @@ def extract(uL: int): #put in pipette head?
 	p.up_uL(uL) #Fill pipette with fluid
 	time.sleep(0.25)
 	z.up(1600) #Raise pipette above vial again
-
-def dispense(uL: int):
-	p.down_uL(uL)
-	time.sleep(0.5)
-	p.up_uL(p.max_uL)
 
 # Functions for Pipette Tip
 def tip_on(increments: tuple[int, int]) -> int:
@@ -69,28 +64,28 @@ def tip_off():
 	y.inward(100)
 
 def wash_tip():
-	extract_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
+	extract_from_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
 	g.go_to((100,900,2500),True)
-	dispense(p.max_uL)
+	p.empty()
 	g.home()
 
 # Functions for Carousel Stage
 def go_to_vial(): 
 	g.go_to((3150,450,664),True)
 
-def extract_vial(uL, vial_num):
+def extract_from_vial(uL, vial_num):
     go_to_vial()
     c.move_to_vial(vial_num)
     extract(uL)
 
-def dispense_vial(uL, vial_num):
+def dispense_in_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
-	dispense(uL)
+	p.empty()
 
 def carousel_stage(): #this is a carousel stage basically
 	tip_on() 
-	retrieve_liquid(100,2) #we get the uL from GUI but we need a vial dictionary for each labeled vial whatever GUI asks for
+	extract_from_vial(100,2) #we get the uL from GUI but we need a vial dictionary for each labeled vial whatever GUI asks for
 	tip_off()
 	g.home()
 
