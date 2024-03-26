@@ -50,8 +50,8 @@ def tip_on(increments: tuple[int, int]) -> int:
     x_coord = x_coord + x_offset*increment_x
     g.go_to((y_coord,x_coord,z_coord),True)
     
-    if (increment_x > 12):
-        increment_x = 1
+    if (increment_x > 11):
+        increment_x = 0
         increment_y += 1
     else:
         increment_x += 1
