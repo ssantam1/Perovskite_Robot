@@ -36,7 +36,7 @@ def tip_on(increments: tuple[int, int]) -> int:
     y_coord = y_coord + y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
     #g.go_to((y_coord,x_coord,z_coord),True)
-    g.go_to((y_coord*2,x_coord,z_coord),True)
+    g.go_to((y_coord,x_coord,z_coord),True)
     
     if (increment_x > 11):
         increment_x = 0
@@ -56,7 +56,7 @@ def tip_off():
 	y.inward(100)
 
 def wash_tip():
-	extract_from_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
+	extract_from_vial(p.max_uL, VIAL_CLEANER) #4 would be the constant for the cleaning solution in this case
 	g.go_to(DISPOSE_BIN,True)
 	p.empty()
 	g.home()
@@ -127,12 +127,26 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	steps: list[(rpm, time)]
 	hot_time: bake time in seconds for hot plate
 	antisolvent: (dispense_time, volume)
+
+	for now i am going to add a +1 to the vial_num to make them the same as constants
 	'''
 	if len(solutions) != 3:
 		raise ValueError("Must select 3 solutions")
 	
 	if len(steps) != 3:
 		raise ValueError("Must select 3 steps")
+
+	g.home()
+	tip_increment = (0,0) #keeping track of tip location
+	tip_increment = tip_on(tip_increment)
+
+	for sol in range(solutions):
+		vial_num, percentage_mix = solutions[sol]
+		vial_num += 1
+		volume = percentage_mix/100 * p.max_uL
+		for r in range(4):
+			extract_from_vial(volume, vial_num)
+			dispense_in_vial(VIAL_EMPTY_A)
 
 	print(solutions)
 	print(steps)
