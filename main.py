@@ -40,10 +40,11 @@ def tip_on(increments: tuple[int, int]) -> int:
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
     x_offset = 46
-    y_offset = 46
+    y_offset = 46 * 2 # multiplied for microstepping test
     y_coord = y_coord + y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
-    g.go_to((y_coord,x_coord,z_coord),True)
+    #g.go_to((y_coord,x_coord,z_coord),True)
+    g.go_to((y_coord*2,x_coord,z_coord),True)
     
     if (increment_x > 11):
         increment_x = 0
@@ -56,7 +57,7 @@ def tip_on(increments: tuple[int, int]) -> int:
 
 def tip_off():
 	'''Disposes of a tip'''
-	g.go_to((100,900,2500),True) #need this for washing stage
+	g.go_to(DISPOSE_BIN,True) #need this for washing stage
 	y.go_home()
 	z.up(700)
 	time.sleep(0.1)
@@ -65,13 +66,13 @@ def tip_off():
 
 def wash_tip():
 	extract_from_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
-	g.go_to((100,900,2500),True)
+	g.go_to(DISPOSE_BIN,True)
 	p.empty()
 	g.home()
 
 # Functions for Carousel Stage
 def go_to_vial(): 
-	g.go_to((3150,450,664),True)
+	g.go_to(PIP_TO_VIAL,True)
 
 def extract_from_vial(uL, vial_num):
     go_to_vial()
