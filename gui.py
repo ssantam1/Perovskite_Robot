@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from drivers.spincoater import SpinCoater
-from drivers.hotplate import HotPlate
-import main
+#import main
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
     row, column = coords
@@ -39,10 +37,21 @@ def show_window():
 
         if remaining < 0:
             label_remaining.config(text=f"Remaining: {remaining}%", fg="red")
+            submit_button.config(state="disabled")
         elif remaining == 0:
             label_remaining.config(text=f"Remaining: {remaining}%", fg="green")
+            submit_button.config(state="normal")
         else:
             label_remaining.config(text=f"Remaining: {remaining}%", fg="black")
+            submit_button.config(state="disabled")
+
+    '''
+    def update_solutions( _ ):
+        # Show an error if a solution is selected twice
+        selected = [sol_one_combo.current(), sol_two_combo.current(), sol_thr_combo.current()]
+        if len(selected) != len(set(selected)):
+            print("Error: Duplicate solutions selected")
+            return'''
 
     root = Tk()
     root.title("Perovskite Fabricatior")
@@ -151,7 +160,12 @@ def show_window():
 
         antisolvent = (safeInt(desolvent_time_entry.get()), safeInt(desolvent_vol_entry.get()))
         
-        main.procedure(solutions, steps, hot_time, antisolvent)
+        #main.procedure(solutions, steps, hot_time, antisolvent)
+        print(solutions)
+        print(steps)
+        print(hot_time)
+        print(antisolvent)
+        
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
     submit_button.grid(column=0, columnspan=2, row=4, padx=10, pady=10)
