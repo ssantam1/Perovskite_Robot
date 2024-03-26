@@ -27,6 +27,9 @@ class Head(Stepper):
         self.max_uL = HEAD_MAX_UL # Maximum volume of the pipette in microliters
         self.current_uL = self.max_uL # Track the current position of the pipette in microliters
 
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.vacuum_pin, GPIO.OUT)
+
     # General motor control functions
 
     def down(self, steps: int):
@@ -71,7 +74,7 @@ class Head(Stepper):
 
     def raise_cup(self):
         '''Raises the suction cup to above pipette tip'''
-        self.lower(self.limit)
+        self.down(self.limit)
 
     def vac_on(self):
         '''Turns on the vacuum pump'''
