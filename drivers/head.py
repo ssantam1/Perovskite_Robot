@@ -67,11 +67,11 @@ class Head(Stepper):
 
     def lower_cup(self):
         '''Lowers the suction cup to below pipette tip'''
-        self.down(self.limit)
+        self.up(self.limit)
 
     def raise_cup(self):
         '''Raises the suction cup to above pipette tip'''
-        self.up(self.limit)
+        self.lower(self.limit)
 
     def vac_on(self):
         '''Turns on the vacuum pump'''
