@@ -64,6 +64,13 @@ def tip_off():
 	z.down(700)
 	y.inward(100)
 
+def get_slide():
+	g.go_to(SLIDE_HOLDER,True)
+	p.lower_cup()
+	c.vac_on()
+	p.raise_cup()
+	g.home()
+
 def wash_tip():
 	extract_from_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
 	g.go_to(DISPOSE_BIN,True)
