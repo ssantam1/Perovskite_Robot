@@ -53,6 +53,16 @@ CAROUSEL_VIAL = 8
 CAROUSEL_STEP_DELAY = 0.006
 CAROUSEL_STEP_SLEEP_TIME = 0.0001 #not sure if this gets used but it was in carousel file
 
+#Vial Constants
+SOLUTION_A = 1
+SOLUTION_B = 2
+SOLUTION_C = 3
+ANTISOLVENT = 4
+CLEANER = 5
+EMPTY1 = 6
+EMPTY2 = 7
+EMPTY3 = 8
+
 #Hot Plate Constants
 HOTPLATE_EN_PIN = 7
 
@@ -60,6 +70,7 @@ HOTPLATE_EN_PIN = 7
 SPINCOATER_EN_PIN = 8
 
 #Coordinate Constants
+DISPOSE_BIN = (100,900,2500)
 PIP_TO_TIP = (1295,3,3765)
 PIP_TO_VIAL = (3150,435,664)
 PIP_TO_SPIN = (4400,522,1670)
