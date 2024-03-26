@@ -22,14 +22,6 @@ c = Carousel()
 s = SpinCoater()
 h = HotPlate()
 
-# Functions to either get rid of or move
-def extract(uL: int): #put in pipette head?
-	p.down_uL(p.max_uL) #Empty air from pipette
-	z.down(1600) #Lower pipette into vial
-	p.up_uL(uL) #Fill pipette with fluid
-	time.sleep(0.25)
-	z.up(1600) #Raise pipette above vial again
-
 # Functions for Pipette Tip
 def tip_on(increments: tuple[int, int]) -> int:
     '''
@@ -54,7 +46,6 @@ def tip_on(increments: tuple[int, int]) -> int:
 		
     return increment_x, increment_y
     
-
 def tip_off():
 	'''Disposes of a tip'''
 	g.go_to(DISPOSE_BIN,True) #need this for washing stage
@@ -63,13 +54,6 @@ def tip_off():
 	time.sleep(0.1)
 	z.down(700)
 	y.inward(100)
-
-def get_slide():
-	g.go_to(SLIDE_HOLDER,True)
-	p.lower_cup()
-	c.vac_on()
-	p.raise_cup()
-	g.home()
 
 def wash_tip():
 	extract_from_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
@@ -80,6 +64,13 @@ def wash_tip():
 # Functions for Carousel Stage
 def go_to_vial(): 
 	g.go_to(PIP_TO_VIAL,True)
+
+def extract(uL: int): #put in pipette head?
+	p.down_uL(p.max_uL) #Empty air from pipette
+	z.down(1600) #Lower pipette into vial
+	p.up_uL(uL) #Fill pipette with fluid
+	time.sleep(0.25)
+	z.up(1600) #Raise pipette above vial again
 
 def extract_from_vial(uL, vial_num):
     go_to_vial()
@@ -104,10 +95,14 @@ def pipette_to_spincoater():
 def suction_to_spincoater(): 
 	g.go_to((3751,522,1670),True)
 
-def slide_pickup():
-	pass
+def get_slide():
+	g.go_to(SLIDE_HOLDER,True)
+	p.lower_cup()
+	c.vac_on()
+	p.raise_cup()
+	g.home()
 
-def slide_dropoff():
+def slide_to_spin():
 	pass
 
 def demo_spincoater_connection(): #one of our requirements
@@ -128,12 +123,8 @@ def spincoater_stage():
 # Check GUI works
 def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot_time: int, antisolvent: tuple[int, int]):
 	'''
-	solution_amt1: selected solution corresponding (vial_num, percentage of mix)
-	solution_amt2: selected solution corresponding (vial_num, percentage of mix)
-	solution_amt3: selected solution corresponding (vial_num, percentage of mix)
-	step1: (rpm, time)
-	step2: (rpm, time)
-	step3: (rpm, time)
+	solutions: list[(vial_num, percentage_mix)]
+	steps: list[(rpm, time)]
 	hot_time: bake time in seconds for hot plate
 	antisolvent: (dispense_time, volume)
 	'''
