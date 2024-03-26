@@ -63,9 +63,9 @@ def tip_off():
 	'''Disposes of a tip'''
 	g.go_to((100,900,2500),True)
 	y.go_home()
-	z.up(900)
+	z.up(700)
 	time.sleep(0.1)
-	z.down(900)
+	z.down(700)
 	y.inward(100)
 
 # Functions for Carousel Stage
