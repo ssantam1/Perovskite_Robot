@@ -126,7 +126,7 @@ def spincoater_stage():
 	#pick up slide when done
 
 # Check GUI works
-def procedure(solution_amt1: tuple[int, int], solution_amt2: tuple[int, int], solution_amt3: tuple[int, int], step1: tuple[int, int], step2: tuple[int, int], step3: tuple[int, int], hot_time: int, antisolvent: tuple[int, int]):
+def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot_time: int, antisolvent: tuple[int, int]):
 	'''
 	solution_amt1: selected solution corresponding (vial_num, percentage of mix)
 	solution_amt2: selected solution corresponding (vial_num, percentage of mix)
@@ -137,12 +137,14 @@ def procedure(solution_amt1: tuple[int, int], solution_amt2: tuple[int, int], so
 	hot_time: bake time in seconds for hot plate
 	antisolvent: (dispense_time, volume)
 	'''
-	print(solution_amt1)
-	print(solution_amt2)
-	print(solution_amt3)
-	print(step1)
-	print(step2)
-	print(step3)
+	if len(solutions) != 3:
+		raise ValueError("Must select 3 solutions")
+	
+	if len(steps) != 3:
+		raise ValueError("Must select 3 steps")
+
+	print(solutions)
+	print(steps)
 	print(hot_time)
 	print(antisolvent)
 

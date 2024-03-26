@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from drivers.spincoater import SpinCoater
 from drivers.hotplate import HotPlate
+import main
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
     row, column = coords
@@ -33,7 +34,7 @@ def show_window():
 
     def update_remaining( _ ):
         total = 100
-        entry_values = [safeInt(entry1.get()), safeInt(entry2.get()), safeInt(entry3.get())]
+        entry_values = [safeInt(sol_one_amt.get()), safeInt(sol_two_amt.get()), safeInt(sol_thr_amt.get())]
         remaining = total - sum(entry_values)
 
         if remaining < 0:
@@ -58,14 +59,14 @@ def show_window():
 
     solution_names = ["Solution A", "Solution B", "Solution C", "Solution D", "Solution E", "Solution F"]
 
-    new_combobox(solution_frame, solution_names, (1,0))
-    entry1 = new_entrybox(solution_frame, update_remaining, (1,1))
+    sol_one_combo = new_combobox(solution_frame, solution_names, (1,0))
+    sol_one_amt = new_entrybox(solution_frame, update_remaining, (1,1))
 
-    new_combobox(solution_frame, solution_names, (2,0))
-    entry2 = new_entrybox(solution_frame, update_remaining, (2,1))
+    sol_two_combo = new_combobox(solution_frame, solution_names, (2,0))
+    sol_two_amt = new_entrybox(solution_frame, update_remaining, (2,1))
 
-    new_combobox(solution_frame, solution_names, (3,0))
-    entry3 = new_entrybox(solution_frame, update_remaining, (3,1))
+    sol_thr_combo = new_combobox(solution_frame, solution_names, (3,0))
+    sol_thr_amt = new_entrybox(solution_frame, update_remaining, (3,1))
 
     # Display remaining percentage to allocate
     label_remaining = Label(solution_frame, text="Remaining: 100%")
@@ -135,17 +136,22 @@ def show_window():
 
     #========================================
     #  SUBMIT BUTTON
-    params: dict = {}
+    params: dict = {} # This will be the dictionary of parameters to pass to the main
 
     def submit_inputs():
-        params["spin_step_one"] = ( safeInt(step_one_speed.get()), safeInt(step_one_duration.get()) )
-        params["spin_step_two"] = ( safeInt(step_two_speed.get()), safeInt(step_two_duration.get()) )
-        params["spin_step_thr"] = ( safeInt(step_thr_speed.get()), safeInt(step_thr_duration.get()) )
+        solutions = [(sol_one_combo.current(), safeInt(sol_one_amt.get())),
+                     (sol_two_combo.current(), safeInt(sol_two_amt.get())),
+                     (sol_thr_combo.current(), safeInt(sol_thr_amt.get()))]
 
-        params["bake_time"] = safeInt(bake_time_entry.get())
-        params["bake_temp"] = safeInt(bake_temp_entry.get())
+        steps = [( safeInt(step_one_speed.get()), safeInt(step_one_duration.get()) ),
+                 ( safeInt(step_two_speed.get()), safeInt(step_two_duration.get()) ),
+                 ( safeInt(step_thr_speed.get()), safeInt(step_thr_duration.get()) )]
         
-        print(params)
+        hot_time = safeInt(bake_time_entry.get())
+
+        antisolvent = (safeInt(desolvent_time_entry.get()), safeInt(desolvent_vol_entry.get()))
+        
+        main.procedure(solutions, steps, hot_time, antisolvent)
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
     submit_button.grid(column=0, columnspan=2, row=4, padx=10, pady=10)
