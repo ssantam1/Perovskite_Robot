@@ -44,8 +44,8 @@ def tip_on(increments: tuple[int, int]) -> int:
     '''
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
-    x_offset = 5
-    y_offset = 5
+    x_offset = 46
+    y_offset = 46
     y_coord = y_coord + y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
     g.go_to((y_coord,x_coord,z_coord),True)
