@@ -61,12 +61,18 @@ def tip_on(increments: tuple[int, int]) -> int:
 
 def tip_off():
 	'''Disposes of a tip'''
-	g.go_to((100,900,2500),True)
+	g.go_to((100,900,2500),True) #need this for washing stage
 	y.go_home()
 	z.up(700)
 	time.sleep(0.1)
 	z.down(700)
 	y.inward(100)
+
+def wash_tip():
+	extract_vial(p.max_uL, 4) #4 would be the constant for the cleaning solution in this case
+	g.go_to((100,900,2500),True)
+	dispense(p.max_uL)
+	g.home()
 
 # Functions for Carousel Stage
 def go_to_vial(): 
@@ -115,6 +121,27 @@ def spincoater_stage():
 	#start an antisolvent timer function to dispense at correct time
 	s.run() #start run with antisolvent timer 
 	#pick up slide when done
+
+# Check GUI works
+def procedure(solution_amt1: tuple[int, int], solution_amt2: tuple[int, int], solution_amt3: tuple[int, int], step1: tuple[int, int], step2: tuple[int, int], step3: tuple[int, int], hot_time: int, antisolvent: tuple[int, int]):
+	'''
+	solution_amt1: selected solution corresponding (vial_num, percentage of mix)
+	solution_amt2: selected solution corresponding (vial_num, percentage of mix)
+	solution_amt3: selected solution corresponding (vial_num, percentage of mix)
+	step1: (rpm, time)
+	step2: (rpm, time)
+	step3: (rpm, time)
+	hot_time: bake time in seconds for hot plate
+	antisolvent: (dispense_time, volume)
+	'''
+	print(solution_amt1)
+	print(solution_amt2)
+	print(solution_amt3)
+	print(step1)
+	print(step2)
+	print(step3)
+	print(hot_time)
+	print(antisolvent)
 
 # Tip on and off demo
 def demo():
