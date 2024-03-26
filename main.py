@@ -36,15 +36,28 @@ def dispense(uL: int):
 	p.up_uL(p.max_uL)
 
 # Functions for Pipette Tip
-def tip_on(incrementer: int) -> int:
+def tip_on(increments: tuple[int, int]) -> int:
     '''
-	must work on this to use incrementer variable and go through multiple tips
+    must work on this to use incrementer variable and go through multiple tips
     incrementer: stored variable in main file that knows what iteration to set the tip to
     function returns incrementer number as well
     '''
+    increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
+    x_offset = 5
+    y_offset = 5
+    y_coord = y_coord + y_offset*increment_y
+    x_coord = x_coord + x_offset*increment_x
+    g.go_to((y_coord,x_coord,z_coord),True)
     
-    g.go_to((1310,7,3765),True)
+    if (increment_x > 12):
+        increment_x = 1
+        increment_y += 1
+    else:
+        increment_x += 1
+		
+    return increment_x, increment_y
+    
 
 def tip_off():
 	'''Disposes of a tip'''
