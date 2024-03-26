@@ -17,16 +17,17 @@ class Head(Stepper):
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
-        self.step_pin = HEAD_STEP_PIN
-        self.dir_pin = HEAD_DIR_PIN
-        self.en_pin = HEAD_EN_PIN
         self.home_pin = None
         self.limit = limit if limit else HEAD_LIMIT
         self.step_delay = step_delay if step_delay else HEAD_STEP_DELAY
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(self.step_pin, self.dir_pin, self.en_pin, self.home_pin, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
-        self.vacuum_pin = HEAD_VACUUM_PIN
-        self.max_uL = HEAD_MAX_UL
+        super().__init__(HEAD_STEP_PIN, HEAD_DIR_PIN, HEAD_EN_PIN, self.home_pin, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
+        
+        self.vacuum_pin = HEAD_VACUUM_PIN # GPIO pin for the vacuum pump
+        self.max_uL = HEAD_MAX_UL # Maximum volume of the pipette in microliters
+        self.current_uL = self.max_uL # Track the current position of the pipette in microliters
+
+    # General motor control functions
 
     def down(self, steps: int):
         '''Moves the pipette plunger down a number of steps'''
@@ -36,10 +37,10 @@ class Head(Stepper):
         '''Moves the pipette plunger up a number of steps'''
         self.negative(steps)
 
-    # Pipette actuation functions
+    # Volume-based pipette actuation functions
         
-    def volume_correction(self, uL: int) -> int:
-        '''Corrects the volume of the pipette to account for the head'''
+    def volume_correction(self, uL: int) -> float:
+        '''Corrects the volume of the pipette to account for linear error'''
         return ((uL * UL_CORRECTION_FACTOR) + UL_CORRECTION_OFFSET)
         
     def down_uL(self, uL: int):
@@ -47,14 +48,21 @@ class Head(Stepper):
         uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.down(steps)
+        self.current_uL -= uL
         
     def up_uL(self, uL: int):
         '''Moves the pipette plunger up a number of microliters'''
         uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.up(steps)
+        self.current_uL += uL
+
+    def empty(self):
+        '''Empties the pipette of any fluid'''
+        self.down_uL(self.current_uL)
+        self.up_uL(self.max_uL)
     
-    # Suciton cup functions
+    # Suction cup functions
 
     def lower_cup(self):
         '''Lowers the suction cup to below pipette tip'''
@@ -82,6 +90,7 @@ if __name__ == "__main__":
         print("up(steps) ---- Moves the pipette finger up")
         print("down_uL(uL) -- Moves the pipette finger down a number of microliters")
         print("up_uL(uL) ---- Moves the pipette finger up a number of microliters")
+        print("empty() ------ Empties the pipette of any fluid")
         print("lower_cup() -- Lowers the suction cup")
         print("raise_cup() -- Raises the suction cup")
         print("enable() ----- Turns on the motor")
