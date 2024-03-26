@@ -140,11 +140,11 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	tip_increment = (0,0) #keeping track of tip location
 	tip_increment = tip_on(tip_increment)
 
-	for sol in range(solutions):
-		vial_num, percentage_mix = solutions[sol]
+	for sol in solutions:
+		vial_num, percentage_mix = sol
 		vial_num += 1
 		volume = percentage_mix/100 * p.max_uL
-		for r in range(4):
+		for _ in range(4):
 			extract_from_vial(volume, vial_num)
 			dispense_in_vial(VIAL_EMPTY_A)
 
