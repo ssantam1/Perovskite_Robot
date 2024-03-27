@@ -27,7 +27,7 @@ class Carousel(Stepper):
     '''Class that represents the carousel inside the Perovskite Synthesis System'''
     def __init__(self, step_delay: int = CAROUSEL_STEP_DELAY, microstep_mode: int = 1) -> None:
         '''Initializes the carousel stepper motor'''
-        super().__init__(CAROUSEL_STEP_PIN, CAROUSEL_DIR_PIN, CAROUSEL_EN_PIN, CAROUSEL_HOME_PIN, None, step_delay, microstep_mode)
+        super().__init__(CAROUSEL_STEP_PIN, CAROUSEL_DIR_PIN, CAROUSEL_EN_PIN, CAROUSEL_HOME_PIN, None, step_delay, microstep_mode=microstep_mode)
 
         self.steps_per_rev = 200 * microstep_mode # Number of steps per revolution on stepper motor
         self.num_vials = 8 # Number of vials/slots in the carousel
