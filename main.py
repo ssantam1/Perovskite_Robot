@@ -32,10 +32,9 @@ def tip_on(increments: tuple[int, int]) -> int:
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
     x_offset = 46
-    y_offset = 46 * 2 # multiplied for microstepping test
+    y_offset = 46 * Y_MICROSTEP # multiplied for microstepping test
     y_coord = y_coord + y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
-    #g.go_to((y_coord,x_coord,z_coord),True)
     g.go_to((y_coord,x_coord,z_coord),True)
     
     if (increment_x > 11):
@@ -82,12 +81,6 @@ def dispense_in_vial(vial_num):
 	c.move_to_vial(vial_num)
 	p.empty()
 
-def carousel_stage(): #this is a carousel stage basically
-	tip_on() 
-	extract_from_vial(100,2) #we get the uL from GUI but we need a vial dictionary for each labeled vial whatever GUI asks for
-	tip_off()
-	g.home()
-
 # Functions for Spin Coater Stage
 def pipette_to_spincoater(): 
 	g.go_to((4400,522,1670),True)
@@ -102,25 +95,19 @@ def get_slide():
 	p.raise_cup()
 	g.home()
 
-def slide_to_spin():
+def drop_slide_to_spin():
 	pass
 
-def demo_spincoater_connection(): #one of our requirements
-	s.add_step(1000,20)
-	s.run()
+def retrieve_slide_from_spin():
+	pass
 
-def spincoater_stage():
-	slide_pickup() #go pick up slide
-	slide_dropoff() #put slide in spin coater
-	s.add_step(1000,20) #add all steps early on
-	#put liquid on slide
-	#pick up antisolvent
-	#put pipette above slide on spincoater
-	#start an antisolvent timer function to dispense at correct time
-	s.run() #start run with antisolvent timer 
-	#pick up slide when done
+def slide_to_hot():
+	pass
 
-# Check GUI works
+def retrieve_slide_from_hot():
+	pass
+
+# Actual Procedure Code to be used in GUI
 def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot_time: int, antisolvent: tuple[int, int]):
 	'''
 	solutions: list[(vial_num, percentage_mix)]
@@ -140,25 +127,46 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	tip_increment = (0,0) #keeping track of tip location
 	tip_increment = tip_on(tip_increment)
 
+	# Carousel Stage
 	for sol in solutions:
 		vial_num, percentage_mix = sol
-		vial_num += 1
+		vial_num += 1 #correcting gui starting at 0 but maybe correct in gui
 		volume = percentage_mix/100 * p.max_uL
 		for _ in range(4):
 			extract_from_vial(volume, vial_num)
 			dispense_in_vial(VIAL_EMPTY_A)
-
-	print(solutions)
-	print(steps)
-	print(hot_time)
-	print(antisolvent)
-
-# Tip on and off demo
-def demo():
-	tip_on()
+		wash_tip()
+	
+	g.home() #recalibrate between each stage
+	
+	# Spin Coater Stage
+	s.connect()
+	get_slide()
+	drop_slide_to_spin() #needs to be written, but drop slide in spin coater
+	anti_disp_time, anti_vol = antisolvent #use antisolvent inputs
+	extract_from_vial(anti_vol, VIAL_ANTISOLVENT)
+	total_spin_time = 0
+	for spin_step in steps:
+		rpm, spin_time = spin_step
+		s.add_step(rpm, spin_time)
+		total_spin_time += spin_time
+	pipette_to_spincoater()
+	start_time = time.perf_counter()
+	current_time = 0
+	s.run()
+	while(current_time < anti_disp_time):
+		current_time = time.perf_counter()-start_time
+	p.empty()
+	time.sleep(total_spin_time - anti_disp_time)
+	
 	tip_off()
-	g.home()
-
+	g.home() #recalibrate between stages again
+    
+	# Hot Plate Stage
+	retrieve_slide_from_spin() #need to write but retrieve slide from spin coater
+	slide_to_hot() #need to write but bring slide to hot plate
+	h.anneal(hot_time)
+	retrieve_slide_from_hot() #maybe???????
 
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
