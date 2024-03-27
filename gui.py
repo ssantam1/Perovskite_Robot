@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-#import main
+import main
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
     row, column = coords
@@ -160,11 +160,11 @@ def show_window():
 
         antisolvent = (safeInt(desolvent_time_entry.get()), safeInt(desolvent_vol_entry.get()))
         
-        #main.procedure(solutions, steps, hot_time, antisolvent)
-        print(solutions)
-        print(steps)
-        print(hot_time)
-        print(antisolvent)
+        main.procedure(solutions, steps, hot_time, antisolvent)
+        #print(solutions)
+        #print(steps)
+        #print(hot_time)
+        #print(antisolvent)
         
 
     submit_button = ttk.Button(master, text="Submit", command=submit_inputs)
