@@ -82,12 +82,6 @@ def dispense_in_vial(vial_num):
 	p.empty()
 
 # Functions for Spin Coater Stage
-def pipette_to_spincoater(): 
-	g.go_to((4400,522,1670),True)
-
-def suction_to_spincoater(): 
-	g.go_to((3751,522,1670),True)
-
 def get_slide():
 	g.go_to(SLIDE_HOLDER,True)
 	p.lower_cup()
