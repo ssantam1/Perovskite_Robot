@@ -49,6 +49,7 @@ class Head(Stepper):
     def down_uL(self, uL: int):
         '''Moves the pipette plunger down a number of microliters'''
         uL = self.volume_correction(uL)
+        print(f"Pipette going down {uL} uLs")
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.down(steps)
         self.current_uL -= uL
@@ -56,12 +57,14 @@ class Head(Stepper):
     def up_uL(self, uL: int):
         '''Moves the pipette plunger up a number of microliters'''
         uL = self.volume_correction(uL)
+        print(f"Pipette going up {uL} uLs")
         steps = int(HEAD_STEPS_PER_UL * uL)
         self.up(steps)
         self.current_uL += uL
 
     def empty(self):
         '''Empties the pipette of any fluid'''
+        print(f"Pipette emptying {self.current_uL} uLs")
         self.down_uL(self.current_uL)
         time.sleep(0.2)
         self.up_uL(self.max_uL)
