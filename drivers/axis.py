@@ -95,11 +95,9 @@ class Gantry():
                 print(f"Error") # Pierce we really need a more descriptive error and also maybe throw an exception
                 exit()
             elif (coord[i] > axis[i].pos):
-                print("Going positive")
                 axis_temp = coord[i]-axis[i].pos
                 axis[i].positive(axis_temp)
             else:
-                print("Going negative")
                 axis_temp = axis[i].pos-coord[i]
                 axis[i].negative(axis_temp)
         return axis
