@@ -151,7 +151,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	get_slide()
 	drop_slide_to_spin() #needs to be written, but drop slide in spin coater
 	extract_from_vial(p.max_uL, VIAL_EMPTY_A)
-	pipette_to_spincoater() #fix coord for this
+	g.go_to(PIP_TO_SPIN, True)
 	p.empty()
 	anti_disp_time, anti_vol = antisolvent #use antisolvent inputs
 	extract_from_vial(anti_vol, VIAL_ANTISOLVENT)
