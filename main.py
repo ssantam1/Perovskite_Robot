@@ -81,6 +81,13 @@ def dispense_in_vial(vial_num):
 	c.move_to_vial(vial_num)
 	p.empty()
 
+def mix_in_vial(vial_num):
+	go_to_vial()
+	c.move_to_vial(vial_num)
+	for _ in range(3):
+		extract(p.max_uL)
+		p.empy()
+
 # Functions for Spin Coater Stage
 def get_slide():
 	g.go_to(SLIDE_HOLDER,True)
@@ -143,6 +150,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 			extract_from_vial(volume, vial_num)
 			dispense_in_vial(VIAL_EMPTY_A)
 		wash_tip()
+	mix_in_vial(VIAL_EMPTY_A)
 	
 	g.home() #recalibrate between each stage
 	
