@@ -91,18 +91,31 @@ def suction_to_spincoater():
 def get_slide():
 	g.go_to(SLIDE_HOLDER,True)
 	p.lower_cup()
-	c.vac_on()
+	p.vac_on()
+	time.sleep(0.75)
 	p.raise_cup()
-	g.home()
+	#g.home()
 
 def drop_slide_to_spin():
-	pass
+	g.go_to(CUP_TO_SPIN, True)
+	p.lower_cup()
+	p.vac_off()
+	time.sleep(0.75)
+	p.raise_cup()
 
 def retrieve_slide_from_spin():
-	pass
+	g.go_to(CUP_TO_SPIN, True)
+	p.lower_cup()
+	p.vac_on()
+	time.sleep(0.75)
+	p.raise_cup()
 
 def slide_to_hot():
-	pass
+	g.go_to(CUP_TO_HOT,True)
+	p.lower_cup()
+	p.vac_off()
+	time.sleep(0.75)
+	p.raise_cup()
 
 def retrieve_slide_from_hot():
 	pass

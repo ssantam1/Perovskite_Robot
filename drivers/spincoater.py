@@ -61,7 +61,7 @@ class SpinCoater():
     
     def add_step(self, rpm: int, time: int) -> str:
         '''Adds a step to the spin coater, returns the response from the board'''
-        print("adding step")
+        print(f"Adding step: {rpm}rpm, {time}seconds")
         return self._send_and_return(f"spc add step {rpm} {time}")
     
     def get_steps(self) -> str:
