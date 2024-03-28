@@ -68,6 +68,7 @@ class Head(Stepper):
         self.down(self.current_steps)
         time.sleep(0.2)
         self.up_uL(self.max_uL)
+        self.current_steps = self.max_uL * HEAD_STEPS_PER_UL
     
     # Suction cup functions
 
