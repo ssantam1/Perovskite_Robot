@@ -127,7 +127,18 @@ def slide_to_hot():
 	p.raise_cup()
 
 def retrieve_slide_from_hot():
-	pass
+	g.go_to(CUP_TO_HOT,True)
+	p.lower_cup()
+	p.vac_on()
+	time.sleep(0.75)
+	p.raise_cup()
+
+def slide_return():
+	g.go_to(SLIDE_HOLDER,True)
+	p.lower_cup()
+	p.vac_off()
+	time.sleep(0.75)
+	p.raise_cup()
 
 # Actual Procedure Code to be used in GUI
 def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot_time: int, antisolvent: tuple[int, int]):
