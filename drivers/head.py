@@ -25,7 +25,7 @@ class Head(Stepper):
         
         self.vacuum_pin = HEAD_VACUUM_PIN # GPIO pin for the vacuum pump
         self.max_uL = HEAD_MAX_UL # Maximum volume of the pipette in microliters
-        self.current_uL = self.max_uL # Track the current position of the pipette in microliters
+        self.current_steps = self.max_uL*HEAD_STEPS_PER_UL # Track the current position of the pipette in microliters
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.vacuum_pin, GPIO.OUT)
@@ -50,21 +50,25 @@ class Head(Stepper):
         '''Moves the pipette plunger down a number of microliters'''
         uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
+        print(f"Pipette moving {steps} steps ({uL} uL) down...")
         self.down(steps)
-        self.current_uL -= uL
+        self.current_steps -= steps
         
     def up_uL(self, uL: int):
         '''Moves the pipette plunger up a number of microliters'''
         uL = self.volume_correction(uL)
         steps = int(HEAD_STEPS_PER_UL * uL)
+        print(f"Pipette moving {steps} steps ({uL} uL) up...")
         self.up(steps)
-        self.current_uL += uL
+        self.current_steps += steps
 
     def empty(self):
         '''Empties the pipette of any fluid'''
-        self.down_uL(self.current_uL)
+        print(f"Emptying pipette of {self.current_steps} steps...")
+        self.down(self.current_steps)
         time.sleep(0.2)
         self.up_uL(self.max_uL)
+        self.current_steps = self.max_uL * HEAD_STEPS_PER_UL
     
     # Suction cup functions
 

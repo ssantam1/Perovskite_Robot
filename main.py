@@ -18,7 +18,7 @@ y = YAxis()
 z = ZAxis()
 g = Gantry(y,x,z)
 p = Head()
-c = Carousel()
+c = Carousel(microstep_mode=4)
 s = SpinCoater()
 h = HotPlate()
 
@@ -144,10 +144,18 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	# Carousel Stage
 	for sol in solutions:
 		vial_num, percentage_mix = sol
+		print(f"sol: {sol}")
+
 		vial_num += 1 #correcting gui starting at 0 but maybe correct in gui
+		
 		volume = percentage_mix/100 * p.max_uL
+		print(f"Volume: {volume}")
+
 		for _ in range(4):
+			print(f"Doing extract_from_vial({volume}, {vial_num})...")
 			extract_from_vial(volume, vial_num)
+
+			print(f"Doing dispense_in_vial({VIAL_EMPTY_A})...")
 			dispense_in_vial(VIAL_EMPTY_A)
 		wash_tip()
 	mix_vial(VIAL_EMPTY_A)

@@ -14,3 +14,6 @@ venv/
 
 # Ignore Steven's personal todo list
 todo.txt
+
+# Ignore experimental stuff that I'm not ready to commit
+experimental.py
