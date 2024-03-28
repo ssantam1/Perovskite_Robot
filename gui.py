@@ -122,6 +122,7 @@ def show_window():
 
     bake_time_entry = new_entrybox(hot_plate_frame, None, (0,1))
     bake_temp_entry = new_entrybox(hot_plate_frame, None, (1,1))
+    bake_temp_entry.config(state='disabled')
 
     Label(master, text="Hot Plate Options", font="Default 13", relief=GROOVE).grid(column=0, row=2)
     hot_plate_frame.grid(column=0, row=3, padx=5, pady=5, sticky=NS)
