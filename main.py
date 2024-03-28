@@ -79,7 +79,9 @@ def extract_from_vial(uL, vial_num):
 def dispense_in_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
+	z.down(1600) #Lower pipette into vial
 	p.empty()
+	z.up(1600) #Raise pipette above vial again
 
 def mix_vial(vial_num):
 	go_to_vial()
