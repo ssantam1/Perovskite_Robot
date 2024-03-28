@@ -214,6 +214,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	h.anneal(hot_time)
 	retrieve_slide_from_hot() #maybe???????
 
+"""
 # Executes whatever commands the user inputs
 if __name__ == "__main__":
 	while(True):
@@ -223,3 +224,4 @@ if __name__ == "__main__":
 			exec(cmd)
 		except Exception as E:
 			print(f"Error {E}, try again.")
+"""
