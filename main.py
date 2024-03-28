@@ -176,7 +176,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 		rpm, spin_time = spin_step
 		s.add_step(rpm, spin_time)
 		total_spin_time += spin_time
-	pipette_to_spincoater()
+	g.go_to(PIP_TO_SPIN, True)
 	start_time = time.perf_counter()
 	current_time = 0
 	s.run()
@@ -186,6 +186,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	time.sleep(total_spin_time - anti_disp_time)
 	
 	tip_off()
+	s.delete_steps() #for future runs make sure to delete all steps off spin coater
 	g.home() #recalibrate between stages again
     
 	# Hot Plate Stage
