@@ -94,7 +94,7 @@ def mix_vial(vial_num):
 		p.down_uL(p.max_uL)
 		p.up_uL(p.max_uL)
 		p.empty()
-	z.down(1600)
+	z.up(1600)
 
 # Functions for Spin Coater Stage
 def get_slide():
