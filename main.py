@@ -62,7 +62,10 @@ def wash_tip():
 
 # Functions for Carousel Stage
 def go_to_vial(): 
-	g.go_to(PIP_TO_VIAL,True)
+	if (g.get_coords == PIP_TO_VIAL):
+		g.go_to(PIP_TO_VIAL, False)
+	else:
+		g.go_to(PIP_TO_VIAL, True)
 
 def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
@@ -81,14 +84,13 @@ def dispense_in_vial(vial_num):
 	c.move_to_vial(vial_num)
 	z.down(1600) #Lower pipette into vial
 	p.empty()
-	z.up(1600) #Raise pipette above vial again
 
 def mix_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
 	for _ in range(3):
 		extract(p.max_uL)
-		p.empy()
+		p.empty()
 
 # Functions for Spin Coater Stage
 def get_slide():
