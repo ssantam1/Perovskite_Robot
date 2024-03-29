@@ -111,4 +111,4 @@ class Gantry():
         self.y.go_home()
     
     def get_coords(self):
-        return (self.y.pos(), self.x.pos(), self.z.pos())
+        return (self.y.pos, self.x.pos, self.z.pos)
