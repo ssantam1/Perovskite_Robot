@@ -45,6 +45,38 @@ class Stepper():
         # Initialize position
         self.pos = 0
 
+    def move_with_accel(self, num_steps: int, accel_constant: int, max_speed: int) -> list[float]:
+        def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: int) -> list[float]:
+            steps = [0.02]
+            for i in range(1,num_steps):
+                prev = steps[i-1]
+                new_step = 1/((prev*acceleration_constant)+(1/prev))
+                if new_step < max_speed:
+                    new_step = max_speed
+                steps.append(new_step)
+            return steps
+        
+        accel_sequence = generate_acceleration_sequence(int(num_steps/2), accel_constant, max_speed)
+        decel_sequence = accel_sequence[::-1]
+        steps = accel_sequence + decel_sequence
+
+        for step in steps:
+            GPIO.output(self.step_pin, 1)
+            time.sleep(0.0001)
+
+            GPIO.output(self.step_pin, 0)
+            time.sleep(step)
+
+    def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int):
+        GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
+        self.move_with_accel(num_steps, accel_constant, max_speed)
+        self.pos += num_steps
+
+    def accel_negative(self, num_steps: int, accel_constant: int, max_speed: int):
+        GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
+        self.move_with_accel(num_steps, accel_constant, max_speed)
+        self.pos -= num_steps
+
     def move_steps(self, steps: int):
         #print(f"Moving {steps} steps")
         for _ in range(steps):
