@@ -38,6 +38,30 @@ class Carousel(Stepper):
         # This is mainly so I can do tests withou turning everything off and on again
         self.current_vial = 1
 
+    def carousellerate(num_steps: int, accel_constant: int, max_speed: int) -> list[float]:
+        def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: int) -> list[float]:
+            steps = [0.02]
+            for i in range(1,num_steps):
+                prev = steps[i-1]
+                new_step = 1/((prev*acceleration_constant)+(1/prev))
+                if new_step < max_speed:
+                    new_step = max_speed
+                steps.append(new_step)
+            return steps
+        
+        accel_sequence = generate_acceleration_sequence(int(num_steps/2), accel_constant, max_speed)
+        decel_sequence = accel_sequence[::-1]
+        steps = accel_sequence + decel_sequence
+
+        for step in steps:
+            GPIO.output(CAROUSEL_STEP_PIN, 1)
+            time.sleep(0.0001)
+
+            GPIO.output(CAROUSEL_STEP_PIN, 0)
+            time.sleep(step)
+
+
+
     # Define a method to move the carousel to a given vial
     def move_to_vial(self, target_vial: int) -> None:
         '''Moves the carousel to a desired vial and, sleeps for 3 seconds, and returns to original position'''
