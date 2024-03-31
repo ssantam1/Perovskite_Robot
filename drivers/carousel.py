@@ -1,23 +1,3 @@
-'''
-Steven Santamorena 10/19/2023
-
-This module is a rework of the carousel test script from the previous year, below is a list of some changes made:
-- Turned carousel into a class to allow easier implementation as a module by other scripts
-- Added move_steps() to reduce reduncancy
-- Added step_sleep_time to make changes to step timing easier and less error-prone
-- Removed unneeded imports and and motorkit setups that were never used
-- Added type annotations for readability
-- Added protection for out-of-bounds user inputs
-- Added docstrings for all function defs
-- Eliminated script code hidden in-between function defs that slowed down execution
-
-To Do:
-- Make inputs async
-- Turn time.sleeps into async.sleeps
-- Assess speed limitations
-'''
-import time
-import asyncio
 import board
 import RPi.GPIO as GPIO
 from drivers.stepper import Stepper
