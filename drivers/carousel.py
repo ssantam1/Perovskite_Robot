@@ -39,6 +39,14 @@ class Carousel(Stepper):
         self.current_vial = target_vial
 
 if __name__ == "__main__":
+    # Run with -i flag to test any functions of the carousel
     c = Carousel()
-    while(True):
-        c.move_to_vial(int(input("Enter a vial number: ")))
+    
+    # Show a list of available functions for carousel/stepper
+    print("Carousel initialized as 'c'")
+    print("Available Carousel Functions:")
+    print("c.move_to_vial(target_vial) ---> Moves the carousel to the target vial")
+    print("c.reset_vial() ----------------> Defines the current vial as vial 1")
+    print("c.move_steps(num_steps) -------> Moves the carousel a certain number of steps, undefined direction")
+    print("c.positive(num_steps) ---------> Moves the carousel num_steps steps in the positive direction (Counterclockwise)")
+    print("c.negative(num_steps) ---------> Moves the carousel num_steps steps in the negative direction (Clockwise)")
