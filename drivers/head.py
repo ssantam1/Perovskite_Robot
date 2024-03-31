@@ -17,11 +17,10 @@ class Head(Stepper):
     '''Class that represents the pipette inside the Perovskite Synthesis System'''
 
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
-        self.home_pin = None
         self.limit = limit if limit else HEAD_LIMIT
         self.step_delay = step_delay if step_delay else HEAD_STEP_DELAY
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(HEAD_STEP_PIN, HEAD_DIR_PIN, HEAD_EN_PIN, self.home_pin, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
+        super().__init__(HEAD_STEP_PIN, HEAD_DIR_PIN, HEAD_EN_PIN, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
         
         self.vacuum_pin = HEAD_VACUUM_PIN # GPIO pin for the vacuum pump
         self.max_uL = HEAD_MAX_UL # Maximum volume of the pipette in microliters

@@ -12,7 +12,7 @@ import board
 import RPi.GPIO as GPIO
 
 class Stepper():
-    def __init__(self, step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir = False, microstep_mode = 1) -> None:
+    def __init__(self, step_pin, dir_pin, en_pin, limit, step_delay, flip_dir = False, microstep_mode = 1) -> None:
         '''
         step_pin: int, GPIO pin number for step pin
         dir_pin: int, GPIO pin number for direction pin
@@ -25,7 +25,6 @@ class Stepper():
         self.step_pin = step_pin
         self.dir_pin = dir_pin
         self.en_pin = en_pin
-        self.home_pin = home_pin
 
         # Stepper settings
         self.steps_per_rev = 200 * microstep_mode #200 default with 1x microstepping
@@ -38,8 +37,6 @@ class Stepper():
         GPIO.setup(self.step_pin, GPIO.OUT)
         GPIO.setup(self.dir_pin, GPIO.OUT)
         GPIO.setup(self.en_pin, GPIO.OUT)
-        if self.home_pin is not None:
-            GPIO.setup(self.home_pin, GPIO.IN)
         GPIO.output(self.en_pin,0)
 
         # Initialize position
@@ -78,26 +75,12 @@ class Stepper():
         self.pos -= num_steps
 
     def move_steps(self, steps: int):
-        #print(f"Moving {steps} steps")
         for _ in range(steps):
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
 
             GPIO.output(self.step_pin, 0)
             time.sleep(self.step_delay)
-
-    def is_home(self):
-        # Our switches are active low
-        return not GPIO.input(self.home_pin)
-
-    def go_home(self):
-        print("Going home...")
-        GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
-        while not self.is_home():
-            self.move_steps(1)
-            self.pos -= 1
-        print(f"Homed! Steps lost: {self.pos}")
-        self.pos = 0
 
     def positive(self, steps: int):
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)

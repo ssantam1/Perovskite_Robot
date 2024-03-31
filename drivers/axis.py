@@ -13,7 +13,25 @@ import RPi.GPIO as GPIO
 from constants import *
 from drivers.stepper import Stepper
 
-class XAxis(Stepper):
+class Axis(Stepper):
+    def __init__(self, step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir = False, microstep_mode = 1) -> None:
+        super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, flip_dir, microstep_mode)
+        self.home_pin = home_pin
+
+    def is_home(self):
+        # Our switches are active low
+        return not GPIO.input(self.home_pin)
+
+    def go_home(self):
+        print("Going home...")
+        GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
+        while not self.is_home():
+            self.move_steps(1)
+            self.pos -= 1
+        print(f"Homed! Steps lost: {self.pos}")
+        self.pos = 0
+
+class XAxis(Axis):
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = X_STEP_PIN
         dir_pin = X_DIR_PIN
@@ -29,7 +47,7 @@ class XAxis(Stepper):
     def left(self, steps: int):
         self.negative(steps)
 
-class YAxis(Stepper):
+class YAxis(Axis):
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = Y_STEP_PIN
         dir_pin = Y_DIR_PIN
@@ -45,7 +63,7 @@ class YAxis(Stepper):
     def outward(self, steps: int):
         self.negative(steps)
         
-class ZAxis(Stepper):
+class ZAxis(Axis):
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
         step_pin = Z_STEP_PIN
         dir_pin = Z_DIR_PIN
