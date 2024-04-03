@@ -43,7 +43,7 @@ class Stepper():
         # Initialize position
         self.pos = 0
 
-    def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float) -> np.ndarray:
+    def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = None) -> np.ndarray:
         if num_steps == 0:
             return np.array([])
         
@@ -57,7 +57,10 @@ class Stepper():
 
         def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: float) -> np.ndarray:
             steps = np.zeros(num_steps)
-            steps[0] = find_initial_speed(acceleration_constant, max_speed)
+            if min_speed is not None:
+                steps[0] = min_speed
+            else:
+                steps[0] = find_initial_speed(acceleration_constant, max_speed)
             for i in range(1, num_steps):
                 prev = steps[i-1]
                 new_step = 1/((prev*acceleration_constant)+(1/prev))
@@ -81,14 +84,14 @@ class Stepper():
             GPIO.output(self.step_pin, 0)
             time.sleep(step)
 
-    def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int):
+    def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
-        self.move_smooth(num_steps, accel_constant, max_speed)
+        self.move_smooth(num_steps, accel_constant, max_speed, min_speed)
         self.pos += num_steps
 
-    def accel_negative(self, num_steps: int, accel_constant: int, max_speed: int):
+    def accel_negative(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
         GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
-        self.move_smooth(num_steps, accel_constant, max_speed)
+        self.move_smooth(num_steps, accel_constant, max_speed, min_speed)
         self.pos -= num_steps
 
     def move_steps(self, steps: int):
