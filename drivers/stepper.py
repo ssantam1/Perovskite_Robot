@@ -83,12 +83,12 @@ class Stepper():
 
     def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int):
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
-        self.move_with_accel(num_steps, accel_constant, max_speed)
+        self.move_smooth(num_steps, accel_constant, max_speed)
         self.pos += num_steps
 
     def accel_negative(self, num_steps: int, accel_constant: int, max_speed: int):
         GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
-        self.move_with_accel(num_steps, accel_constant, max_speed)
+        self.move_smooth(num_steps, accel_constant, max_speed)
         self.pos -= num_steps
 
     def move_steps(self, steps: int):
