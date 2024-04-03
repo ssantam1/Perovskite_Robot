@@ -17,6 +17,9 @@ class Axis(Stepper):
     def __init__(self, step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir = False, microstep_mode = 1) -> None:
         super().__init__(step_pin, dir_pin, en_pin, limit, step_delay, flip_dir, microstep_mode)
         self.home_pin = home_pin
+        # You can uncomment this line if you rewire the home switches to use less cabling
+        #GPIO.setup(self.home_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.home_pin, GPIO.IN)
 
     def is_home(self):
         # Our switches are active low
