@@ -27,9 +27,11 @@ X_HOME_PIN = 4
 X_LIMIT = 1140 * X_MICROSTEP
 X_STEP_DELAY = 0.001
 X_MOTOR_PINS = MotorPins(X_STEP_PIN, X_DIR_PIN, X_EN_PIN, X_HOME_PIN)
-X_ACCEL = 25000
-X_SPEED_MIN = 0.0035
-X_SPEED_MAX = 0.0001
+
+# 100 steps moves 19 mm = 0.19 mm per step = 0.00019 meters per step
+X_ACCEL = 25000 # 25000 steps/sec^2 = 4.75 meters/sec^2
+X_SPEED_MIN = 0.0035 # 0.0035 sec/step = 285.714 steps/sec = 0.0542857 meters/sec
+X_SPEED_MAX = 0.0001 # 0.0001 sec/step = 10000.0 steps/sec = 1.9 meters/sec
 
 #Y Constants
 Y_STEP_PIN = 12
