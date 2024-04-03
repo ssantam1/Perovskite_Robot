@@ -10,6 +10,7 @@ Usage: Inheritable class for other classes that utilize stepper motors
 import time
 import board
 import RPi.GPIO as GPIO
+import numpy as np
 
 class Stepper():
     def __init__(self, step_pin, dir_pin, en_pin, limit, step_delay, flip_dir = False, microstep_mode = 1) -> None:
@@ -42,20 +43,36 @@ class Stepper():
         # Initialize position
         self.pos = 0
 
-    def move_with_accel(self, num_steps: int, accel_constant: int, max_speed: int) -> list[float]:
-        def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: int) -> list[float]:
-            steps = [0.02]
-            for i in range(1,num_steps):
+    def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float) -> np.ndarray:
+        if num_steps == 0:
+            return np.array([])
+        
+        def find_initial_speed(accel_constant: int, max_speed: float) -> float:
+            speed = max_speed
+            while True:
+                new_speed = 1 / ((-1 * speed * accel_constant) + (1 / speed))
+                if new_speed < 0:
+                    return speed
+                speed = new_speed
+
+        def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: float) -> np.ndarray:
+            steps = np.zeros(num_steps)
+            steps[0] = find_initial_speed(acceleration_constant, max_speed)
+            for i in range(1, num_steps):
                 prev = steps[i-1]
                 new_step = 1/((prev*acceleration_constant)+(1/prev))
-                if new_step < max_speed:
-                    new_step = max_speed
-                steps.append(new_step)
+                steps[i] = new_step
+            steps = np.maximum(steps, max_speed)
             return steps
-        
+
         accel_sequence = generate_acceleration_sequence(int(num_steps/2), accel_constant, max_speed)
-        decel_sequence = accel_sequence[::-1]
-        steps = accel_sequence + decel_sequence
+        
+        if num_steps % 2 == 0:
+            decel_sequence = np.flip(accel_sequence)
+        else:
+            decel_sequence = np.flip(accel_sequence[:-1])
+        
+        steps = np.concatenate((accel_sequence, decel_sequence))
 
         for step in steps:
             GPIO.output(self.step_pin, 1)
