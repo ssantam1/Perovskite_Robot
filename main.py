@@ -64,8 +64,6 @@ def wash_tip():
 def go_to_vial():
 	(curr_y, curr_x, curr_z) = g.get_coords()
 	(targ_y, targ_x, targ_z) = PIP_TO_VIAL
-	print(f"curr_y: {curr_y}, curr_z: {curr_z}")
-	print(f"targ_y: {targ_y}, targ_z: {targ_z}")
 	if (curr_y == targ_y and curr_x == targ_x):
 		g.go_to(PIP_TO_VIAL, False)
 	else:
