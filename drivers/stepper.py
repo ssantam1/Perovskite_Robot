@@ -78,6 +78,11 @@ class Stepper():
         steps = np.concatenate((accel_sequence, decel_sequence))
 
         for step in steps:
+            if step == max_speed:
+                print("Profile will reach max speed")
+                break
+
+        for step in steps:
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
 
