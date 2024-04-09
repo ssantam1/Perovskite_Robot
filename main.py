@@ -84,17 +84,15 @@ def extract_from_vial(uL, vial_num):
 def dispense_in_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
-	z.down(1600) #Lower pipette into vial
+	z.down(1000) #Lower pipette into vial
 	p.empty()
-	z.up(1600)
+	z.up(1000)
 
 def mix_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
 	z.down(1600)
 	for _ in range(3):
-		p.down_uL(p.max_uL)
-		p.up_uL(p.max_uL)
 		p.empty()
 	z.up(1600)
 
@@ -179,7 +177,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 			print(f"Doing dispense_in_vial({VIAL_EMPTY_A})...")
 			dispense_in_vial(VIAL_EMPTY_A)
 		wash_tip()
-	mix_vial(VIAL_EMPTY_A)
+	mix_vial(VIAL_EMPTY_A) #you already have mixture taken in
 	
 	g.home() #recalibrate between each stage
 	
@@ -187,7 +185,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	s.connect()
 	get_slide()
 	drop_slide_to_spin() #needs to be written, but drop slide in spin coater
-	extract_from_vial(p.max_uL, VIAL_EMPTY_A)
+	#extract_from_vial(p.max_uL, VIAL_EMPTY_A) useless if mixture is extracted from mix_vial
 	g.go_to(PIP_TO_SPIN, True)
 	p.empty()
 	anti_disp_time, anti_vol = antisolvent #use antisolvent inputs
