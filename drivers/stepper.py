@@ -43,51 +43,49 @@ class Stepper():
         # Initialize position
         self.pos = 0
 
-    def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = None) -> np.ndarray:
+    # Acceleration functions
+
+    def gen_linear_decel(self, accel_const: int, min_delay: float, max_delay: float = 1) -> list[float]:
+        delay_array = []
+        delay = min_delay
+
+        # When delay is negative, speed is negative so we need to stop cause we've collided with 0
+        while delay >= 0 and delay <= max_delay:
+            delay_array.append(delay)
+            delay = 1 / ((-1 * delay * accel_const) + (1 / delay))
+
+        return delay_array[:-1]
+
+    def gen_movement_seq(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = 1) -> list[float]:
         if num_steps == 0:
-            return np.array([])
-        
-        def find_initial_speed(accel_constant: int, max_speed: float) -> float:
-            speed = max_speed
-            while True:
-                new_speed = 1 / ((-1 * speed * accel_constant) + (1 / speed))
-                if new_speed < 0:
-                    return speed
-                speed = new_speed
+            return []
 
-        def generate_acceleration_sequence(num_steps: int, acceleration_constant: int, max_speed: float) -> np.ndarray:
-            steps = np.zeros(num_steps)
-            if min_speed is not None:
-                steps[0] = min_speed
-            else:
-                steps[0] = find_initial_speed(acceleration_constant, max_speed)
-            for i in range(1, num_steps):
-                prev = steps[i-1]
-                new_step = 1/((prev*acceleration_constant)+(1/prev))
-                steps[i] = new_step
-            steps = np.maximum(steps, max_speed)
-            return steps
+        decel_sequence = self.gen_linear_decel(accel_constant, max_speed, min_speed)
+        accel_sequence = decel_sequence[::-1]
 
-        accel_sequence = generate_acceleration_sequence(int(num_steps/2), accel_constant, max_speed)
-        
-        if num_steps % 2 == 0:
-            decel_sequence = np.flip(accel_sequence)
+        accel_sequence = accel_sequence[:num_steps]
+        decel_sequence = decel_sequence[-num_steps:]
+
+        sequence = [max_speed] * num_steps
+        for i in range(len(accel_sequence)):
+            sequence[i] = max(accel_sequence[i], sequence[i])
+        for i in range(len(decel_sequence)):
+            sequence[-i-1] = max(decel_sequence[-i-1], sequence[-i-1])
+
+        if max_speed in sequence:
+            print("Profile type - Trapezoidal, max speed reached in sequence")
         else:
-            decel_sequence = np.flip(accel_sequence[:-1])
-        
-        steps = np.concatenate((accel_sequence, decel_sequence))
+            print("Profile type - Triangular, max speed not reached in sequence")
 
-        for step in steps:
-            if step == max_speed:
-                print("Profile will reach max speed")
-                break
+        return sequence
+
+    def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = None):
+        steps = self.gen_movement_seq(num_steps, accel_constant, max_speed, min_speed)
 
         for step in steps:
             GPIO.output(self.step_pin, 1)
-            time.sleep(0.0001)
-
-            GPIO.output(self.step_pin, 0)
             time.sleep(step)
+            GPIO.output(self.step_pin, 0)
 
     def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
