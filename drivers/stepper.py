@@ -86,7 +86,7 @@ class Stepper():
             GPIO.output(self.step_pin, 1)
             time.sleep(step)
             GPIO.output(self.step_pin, 0)
-            time.sleep(0.00001)
+            time.sleep(0.000000001) # 1 nanosecond sleep
 
     def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
