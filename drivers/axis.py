@@ -44,6 +44,12 @@ class XAxis(Axis):
         step_delay = step_delay if step_delay else X_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir=False, microstep_mode=microstep_mode)
 
+    def positive(self, steps: int):
+        self.accel_positive(steps, X_ACCEL_CONST, X_MIN_DELAY, X_MAX_DELAY)
+
+    def negative(self, steps: int):
+        self.accel_negative(steps, X_ACCEL_CONST, X_MIN_DELAY, X_MAX_DELAY)
+
     def right(self, steps: int):
         self.positive(steps)
 
@@ -60,6 +66,12 @@ class YAxis(Axis):
         step_delay = step_delay if step_delay else Y_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir=True, microstep_mode=microstep_mode)
 
+    def positive(self, steps: int):
+        self.accel_positive(steps, Y_ACCEL_CONST, Y_MIN_DELAY)
+
+    def negative(self, steps: int):
+        self.accel_negative(steps, Y_ACCEL_CONST, Y_MIN_DELAY)
+
     def inward(self, steps: int):
         self.positive(steps)
 
@@ -75,6 +87,12 @@ class ZAxis(Axis):
         limit = limit if limit else Z_LIMIT
         step_delay = step_delay if step_delay else Z_STEP_DELAY
         super().__init__(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir=False, microstep_mode=microstep_mode)
+
+    def positive(self, steps: int):
+        self.accel_positive(steps, Z_ACCEL_CONST, Z_MIN_DELAY, Z_MAX_DELAY)
+
+    def negative(self, steps: int):
+        self.accel_negative(steps, Z_ACCEL_CONST, Z_MIN_DELAY, Z_MAX_DELAY)
 
     def up(self, steps: int):
         self.negative(steps)

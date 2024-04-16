@@ -29,9 +29,9 @@ X_STEP_DELAY = 0.001
 X_MOTOR_PINS = MotorPins(X_STEP_PIN, X_DIR_PIN, X_EN_PIN, X_HOME_PIN)
 
 # 100 steps moves 19 mm = 0.19 mm per step = 0.00019 meters per step
-X_ACCEL = 25000 # 25000 steps/sec^2 = 4.75 meters/sec^2
-X_SPEED_MIN = 0.0035 # 0.0035 sec/step = 285.714 steps/sec = 0.0542857 meters/sec
-X_SPEED_MAX = 0.0001 # 0.0001 sec/step = 10000.0 steps/sec = 1.9 meters/sec
+X_ACCEL_CONST = 7500
+X_MAX_DELAY = 0.0035 # 0.0035 sec/step = 285.714 steps/sec = 0.0542857 meters/sec
+X_MIN_DELAY = 0.0001 # 0.0001 sec/step = 10000.0 steps/sec = 1.9 meters/sec
 
 #Y Constants
 Y_STEP_PIN = 12
@@ -43,6 +43,7 @@ Y_STEP_DELAY = 0.0015
 Y_MOTOR_PINS = MotorPins(Y_STEP_PIN, Y_DIR_PIN, Y_EN_PIN, Y_HOME_PIN)
 Y_ACCEL_CONST = 3000
 Y_MIN_DELAY = 0.00025 # ~4000 steps/sec
+Y_MAX_DELAY = None
 
 #Z Constants
 Z_STEP_PIN = 16
@@ -52,6 +53,9 @@ Z_HOME_PIN = 3
 Z_LIMIT = 4000 * Z_MICROSTEP
 Z_STEP_DELAY = 0.001
 Z_MOTOR_PINS = MotorPins(Z_STEP_PIN, Z_DIR_PIN, Z_EN_PIN, Z_HOME_PIN)
+Z_ACCEL_CONST = 1000
+Z_MIN_DELAY = 0.00075
+Z_MAX_DELAY = 0.0015
 
 #Head Constants
 HEAD_STEP_PIN = 13
