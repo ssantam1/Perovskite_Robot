@@ -83,10 +83,12 @@ class Head(Stepper):
     def vac_on(self):
         '''Turns on the vacuum pump'''
         GPIO.output(self.vacuum_pin, 1)
+        time.sleep(0.5)
       
     def vac_off(self):
         '''Turns off the vacuum pump'''
         GPIO.output(self.vacuum_pin, 0)
+        time.sleep(0.5)
 
 if __name__ == "__main__":
     # Give user control of the pipette for testing
