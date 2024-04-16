@@ -210,6 +210,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
     
 	# Hot Plate Stage
 	retrieve_slide_from_spin() #need to write but retrieve slide from spin coater
+	h.heat_up()
 	slide_to_hot() #need to write but bring slide to hot plate
 	h.anneal(hot_time)
 	retrieve_slide_from_hot() #maybe???????

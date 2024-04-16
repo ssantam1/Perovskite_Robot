@@ -27,10 +27,14 @@ class HotPlate():
     def hot_off(self):
         GPIO.output(self.en_pin,0)
 
+    def heat_up(self):
+        self.hot_on()
+        time.sleep(180) #sleep for 3 minutes to heat up
+
     def anneal(self, seconds_time: int): #we can rename the time variable
+        '''Only use anneal after the heat up function has been performed'''
         start_time = time.perf_counter()
         current_time = 0
-        self.hot_on()
         while(current_time < seconds_time):
             current_time = time.perf_counter()-start_time
         self.hot_off()
