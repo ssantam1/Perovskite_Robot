@@ -35,7 +35,7 @@ class Carousel(Stepper):
             GPIO.output(self.dir_pin,0)
 
         # Move the motor to the target vial
-        self.move_steps(steps_to_move)
+        self.move_smooth(steps_to_move, CAROUSEL_ACCEL_CONST, CAROUSEL_MIN_DELAY)
         self.current_vial = target_vial
 
 if __name__ == "__main__":
