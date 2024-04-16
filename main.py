@@ -49,9 +49,9 @@ def tip_off():
 	'''Disposes of a tip'''
 	g.go_to(DISPOSE_BIN,True) #need this for washing stage
 	y.go_home()
-	z.up(700)
+	z.up(800)
 	time.sleep(0.1)
-	z.down(700)
+	z.down(800)
 	y.inward(100)
 
 def wash_tip():
