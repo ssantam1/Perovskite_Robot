@@ -56,9 +56,11 @@ class Stepper():
 
         return delay_array[:-1]
 
-    def gen_movement_seq(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = 1) -> list[float]:
+    def gen_movement_seq(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = None) -> list[float]:
         if num_steps == 0:
             return []
+
+        min_speed = min_speed if min_speed else 1
 
         decel_sequence = self.gen_linear_decel(accel_constant, max_speed, min_speed)
         accel_sequence = decel_sequence[::-1]
