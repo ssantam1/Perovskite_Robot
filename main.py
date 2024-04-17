@@ -180,14 +180,13 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 			print(f"Doing extract_from_vial({to_extract}, {vial_num})...")
 			extract_from_vial(to_extract, vial_num)
 			volume -= to_extract
-			extract_from_vial(volume, vial_num)
 
 			print(f"Doing dispense_in_vial({VIAL_EMPTY_A})...")
 			dispense_in_vial(VIAL_EMPTY_A)
 		wash_tip()
 	mix_vial(VIAL_EMPTY_A) #you already have mixture taken in
 	
-	g.home() #recalibrate between each stage
+	#g.home() #recalibrate between each stage
 	
 	# Spin Coater Stage
 	s.connect()
@@ -198,6 +197,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	p.empty()
 	anti_disp_time, anti_vol = antisolvent #use antisolvent inputs
 	extract_from_vial(anti_vol, VIAL_ANTISOLVENT)
+	c.move_to_vial(1)
 	total_spin_time = 0
 	for spin_step in steps:
 		rpm, spin_time = spin_step
