@@ -101,43 +101,49 @@ def get_slide():
 	g.go_to(SLIDE_HOLDER,True)
 	p.lower_cup()
 	p.vac_on()
-	#time.sleep(0.75)
 	p.raise_cup()
-	#g.home()
 
 def drop_slide_to_spin():
 	g.go_to(CUP_TO_SPIN, True)
 	p.vac_off()
 	p.lower_cup()
-	time.sleep(1)
+	time.sleep(3)
 	p.raise_cup()
 
 def retrieve_slide_from_spin():
 	g.go_to(CUP_TO_SPIN, True)
 	p.lower_cup()
 	p.vac_on()
-	#time.sleep(0.75)
 	p.raise_cup()
 
+def go_to_hot():
+	(curr_y, curr_x, curr_z) = g.get_coords()
+	(targ_y, targ_x, targ_z) = CUP_TO_HOT
+	if (curr_y == targ_y and curr_x == targ_x):
+		g.go_to(CUP_TO_HOT, False)
+	else:
+		g.go_to(CUP_TO_HOT, True)
+
 def slide_to_hot():
-	g.go_to(CUP_TO_HOT,True)
+	go_to_hot()
 	p.vac_off()
 	p.lower_cup()
-	time.sleep(1)
+	time.sleep(3)
 	p.raise_cup()
 
 def retrieve_slide_from_hot():
-	g.go_to(CUP_TO_HOT,True)
+	go_to_hot()
+	z.down(80)
 	p.lower_cup()
 	p.vac_on()
-	#time.sleep(0.75)
 	p.raise_cup()
+	z.up(80)
 
 def slide_return():
 	g.go_to(SLIDE_HOLDER,True)
 	p.lower_cup()
 	p.vac_off()
-	time.sleep(1)
+	time.sleep(3)
 	p.raise_cup()
 
 # Actual Procedure Code to be used in GUI
