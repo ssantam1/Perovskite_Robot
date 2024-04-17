@@ -167,11 +167,15 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 
 		vial_num += 1 #correcting gui starting at 0 but maybe correct in gui
 		
-		volume = percentage_mix/100 * p.max_uL
+		volume = percentage_mix/100 * 1000
 		print(f"Volume: {volume}")
 
-		for _ in range(4):
-			print(f"Doing extract_from_vial({volume}, {vial_num})...")
+		while volume > 0:
+			to_extract = min(volume, 200)
+
+			print(f"Doing extract_from_vial({to_extract}, {vial_num})...")
+			extract_from_vial(to_extract, vial_num)
+			volume -= to_extract
 			extract_from_vial(volume, vial_num)
 
 			print(f"Doing dispense_in_vial({VIAL_EMPTY_A})...")
