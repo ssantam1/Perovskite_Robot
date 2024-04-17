@@ -163,6 +163,10 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	# Carousel Stage
 	for sol in solutions:
 		vial_num, percentage_mix = sol
+
+		if percentage_mix == 0:
+			continue
+
 		print(f"sol: {sol}")
 
 		vial_num += 1 #correcting gui starting at 0 but maybe correct in gui
