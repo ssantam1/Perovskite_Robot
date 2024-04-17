@@ -71,10 +71,10 @@ def go_to_vial():
 
 def extract(uL: int): #put in pipette head?
 	p.down_uL(p.max_uL) #Empty air from pipette
-	z.down(1600) #Lower pipette into vial
+	z.down(1900) #Lower pipette into vial
 	p.up_uL(uL) #Fill pipette with fluid
 	time.sleep(0.25)
-	z.up(1600) #Raise pipette above vial again
+	z.up(1900) #Raise pipette above vial again
 
 def extract_from_vial(uL, vial_num):
     go_to_vial()
@@ -91,10 +91,10 @@ def dispense_in_vial(vial_num):
 def mix_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
-	z.down(1600)
+	z.down(1900)
 	for _ in range(3):
 		p.empty()
-	z.up(1600)
+	z.up(1900)
 
 # Functions for Spin Coater Stage
 def get_slide():
