@@ -31,9 +31,9 @@ def tip_on(increments: tuple[int, int]) -> int:
     '''
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
-    x_offset = 46
-    y_offset = 46 * Y_MICROSTEP  # multiplied for microstepping test
-    y_coord = y_coord + y_offset*increment_y
+    x_offset = 45
+    y_offset = 56 * Y_MICROSTEP  # multiplied for microstepping test
+    y_coord = y_coord - y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
     g.go_to((y_coord,x_coord,z_coord),True)
     
@@ -140,7 +140,7 @@ def retrieve_slide_from_hot():
 	z.up(80)
 
 def slide_return():
-	g.go_to(SLIDE_HOLDER,True)
+	g.go_to(TEMP_SLIDE_BIN,True)
 	p.lower_cup()
 	p.vac_off()
 	time.sleep(3)
@@ -177,7 +177,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 
 		vial_num += 1  # correcting gui starting at 0 but maybe correct in gui
 		
-		volume = percentage_mix/100 * 1000
+		volume = percentage_mix/100 * 2000
 		print(f"Volume: {volume}")
 
 		while volume > 0:
@@ -225,6 +225,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	slide_to_hot()  # need to write but bring slide to hot plate
 	h.anneal(hot_time)
 	retrieve_slide_from_hot()  # maybe???????
+	slide_return()
 
 """
 # Executes whatever commands the user inputs
