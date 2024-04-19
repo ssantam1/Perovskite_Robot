@@ -12,7 +12,7 @@ from drivers.hotplate import HotPlate
 import time
 
 # Create instances of the objects 
-#maybe rename these from single letters at some point
+# maybe rename these from single letters at some point
 x = XAxis()
 y = YAxis()
 z = ZAxis()
@@ -32,7 +32,7 @@ def tip_on(increments: tuple[int, int]) -> int:
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = PIP_TO_TIP
     x_offset = 46
-    y_offset = 46 * Y_MICROSTEP # multiplied for microstepping test
+    y_offset = 46 * Y_MICROSTEP  # multiplied for microstepping test
     y_coord = y_coord + y_offset*increment_y
     x_coord = x_coord + x_offset*increment_x
     g.go_to((y_coord,x_coord,z_coord),True)
@@ -47,7 +47,7 @@ def tip_on(increments: tuple[int, int]) -> int:
     
 def tip_off():
 	'''Disposes of a tip'''
-	g.go_to(DISPOSE_BIN,True) #need this for washing stage
+	g.go_to(DISPOSE_BIN,True)  # need this for washing stage
 	y.go_home()
 	z.up(800)
 	time.sleep(0.1)
@@ -55,7 +55,7 @@ def tip_off():
 	y.inward(100)
 
 def wash_tip():
-	extract_from_vial(p.max_uL, VIAL_CLEANER) #4 would be the constant for the cleaning solution in this case
+	extract_from_vial(p.max_uL, VIAL_CLEANER)  # 4 would be the constant for the cleaning solution in this case
 	g.go_to(DISPOSE_BIN,True)
 	p.empty()
 	g.home()
@@ -69,12 +69,12 @@ def go_to_vial():
 	else:
 		g.go_to(PIP_TO_VIAL, True)
 
-def extract(uL: int): #put in pipette head?
-	p.down_uL(p.max_uL) #Empty air from pipette
-	z.down(1900) #Lower pipette into vial
-	p.up_uL(uL) #Fill pipette with fluid
+def extract(uL: int):  # put in pipette head?
+	p.down_uL(p.max_uL)  # Empty air from pipette
+	z.down(1900)  # Lower pipette into vial
+	p.up_uL(uL)  # Fill pipette with fluid
 	time.sleep(0.25)
-	z.up(1900) #Raise pipette above vial again
+	z.up(1900)  # Raise pipette above vial again
 
 def extract_from_vial(uL, vial_num):
     go_to_vial()
@@ -84,7 +84,7 @@ def extract_from_vial(uL, vial_num):
 def dispense_in_vial(vial_num):
 	go_to_vial()
 	c.move_to_vial(vial_num)
-	z.down(1000) #Lower pipette into vial
+	z.down(1000)  # Lower pipette into vial
 	p.empty()
 	z.up(1000)
 
@@ -163,7 +163,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 		raise ValueError("Must select 3 steps")
 
 	g.home()
-	tip_increment = (0,0) #keeping track of tip location
+	tip_increment = (0,0)  # keeping track of tip location
 	tip_increment = tip_on(tip_increment)
 
 	# Carousel Stage
@@ -175,7 +175,7 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 
 		print(f"sol: {sol}")
 
-		vial_num += 1 #correcting gui starting at 0 but maybe correct in gui
+		vial_num += 1  # correcting gui starting at 0 but maybe correct in gui
 		
 		volume = percentage_mix/100 * 1000
 		print(f"Volume: {volume}")
@@ -190,18 +190,15 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 			print(f"Doing dispense_in_vial({VIAL_EMPTY_A})...")
 			dispense_in_vial(VIAL_EMPTY_A)
 		wash_tip()
-	mix_vial(VIAL_EMPTY_A) #you already have mixture taken in
-	
-	#g.home() #recalibrate between each stage
+	mix_vial(VIAL_EMPTY_A)  # you already have mixture taken in
 	
 	# Spin Coater Stage
 	s.connect()
 	get_slide()
-	drop_slide_to_spin() #needs to be written, but drop slide in spin coater
-	#extract_from_vial(p.max_uL, VIAL_EMPTY_A) useless if mixture is extracted from mix_vial
+	drop_slide_to_spin()  # needs to be written, but drop slide in spin coater
 	g.go_to(PIP_TO_SPIN, True)
 	p.empty()
-	anti_disp_time, anti_vol = antisolvent #use antisolvent inputs
+	anti_disp_time, anti_vol = antisolvent  # use antisolvent inputs
 	extract_from_vial(anti_vol, VIAL_ANTISOLVENT)
 	c.move_to_vial(1)
 	total_spin_time = 0
@@ -219,15 +216,15 @@ def procedure(solutions: list[tuple[int, int]], steps: list[tuple[int,int]], hot
 	time.sleep(total_spin_time - anti_disp_time)
 	
 	tip_off()
-	s.delete_steps() #for future runs make sure to delete all steps off spin coater
-	g.home() #recalibrate between stages again
+	s.delete_steps()  # for future runs make sure to delete all steps off spin coater
+	g.home()  # recalibrate between stages again
     
 	# Hot Plate Stage
-	retrieve_slide_from_spin() #need to write but retrieve slide from spin coater
+	retrieve_slide_from_spin()  # need to write but retrieve slide from spin coater
 	h.heat_up()
-	slide_to_hot() #need to write but bring slide to hot plate
+	slide_to_hot()  # need to write but bring slide to hot plate
 	h.anneal(hot_time)
-	retrieve_slide_from_hot() #maybe???????
+	retrieve_slide_from_hot()  # maybe???????
 
 """
 # Executes whatever commands the user inputs
