@@ -64,14 +64,16 @@ def wash_tip():
     head.empty()
     gantry.home()
 
-# Functions for Carousel Stage
 def go_to_vial():
-    (curr_y, curr_x, curr_z) = gantry.get_coords()
-    (targ_y, targ_x, targ_z) = const.PIP_TO_VIAL
-    if (curr_y == targ_y and curr_x == targ_x):
-        gantry.go_to(const.PIP_TO_VIAL, False)
-    else:
-        gantry.go_to(const.PIP_TO_VIAL, True)
+    """Moves the gantry to position the pipette tip above the active vial."""
+    (current_y, current_x, _) = gantry.get_coords()
+    (target_y, target_x, _) = const.PIP_TO_VIAL
+
+    already_at_vial: bool = current_y == target_y and current_x == target_x
+
+    gantry.go_to(const.PIP_TO_VIAL, already_at_vial)
+    # Consider adding carousel.move_to_vial() here...
+    # ...every call to this function calls it immediately after
 
 def extract(uL: int):
     head.down_uL(head.max_uL)  # Empty air from pipette
