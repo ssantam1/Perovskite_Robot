@@ -71,7 +71,7 @@ def go_to_vial():
 
     already_at_vial: bool = current_y == target_y and current_x == target_x
 
-    gantry.go_to(const.PIP_TO_VIAL, already_at_vial)
+    gantry.go_to(const.PIP_TO_VIAL, not already_at_vial)
     # Consider adding carousel.move_to_vial() here...
     # ...every call to this function calls it immediately after
 
