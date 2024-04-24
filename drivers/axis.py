@@ -55,7 +55,7 @@ class Axis(Stepper):
 
         steps_lost = self.pos
         self.pos = 0
-        print(f"Homed! Steps lost: {self.pos}")
+        print(f"Homed! Steps lost: {steps_lost}")
 
 class XAxis(Axis):
     def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
