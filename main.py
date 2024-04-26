@@ -200,10 +200,12 @@ def procedure(
             dispense_in_vial(const.VIAL_EMPTY_A)
         wash_tip()
     mix_vial(const.VIAL_EMPTY_A)  # You already have mixture taken in
+    dispense_in_vial(const.VIAL_EMPTY_A)
     
     # Spin Coater Stage
     get_slide()
     drop_slide_to_spin()  # Needs to be written, but drop slide in spin coater
+    extract_from_vial(head.max_uL, const.VIAL_EMPTY_A)
     gantry.go_to(const.PIP_TO_SPIN, True)
     head.empty()
     anti_disp_time, anti_vol = antisolvent  # Use antisolvent inputs
