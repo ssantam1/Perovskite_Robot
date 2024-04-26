@@ -171,6 +171,7 @@ def procedure(
         raise ValueError("Must select 3 steps.")
 
     gantry.home()
+    spincoater.connect()
     tip_increment = (0, 0)  # Keeping track of tip location
     tip_increment = tip_on(tip_increment)
 
@@ -201,7 +202,6 @@ def procedure(
     mix_vial(const.VIAL_EMPTY_A)  # You already have mixture taken in
     
     # Spin Coater Stage
-    spincoater.connect()
     get_slide()
     drop_slide_to_spin()  # Needs to be written, but drop slide in spin coater
     gantry.go_to(const.PIP_TO_SPIN, True)
