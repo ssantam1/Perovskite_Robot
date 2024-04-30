@@ -7,29 +7,49 @@ Created by Pierce Alvir and Steven Santamorena
 Usage: Class to operate robotic head mounted on the gantry
 
 '''
-import time 
+import time
+
 import board
 import RPi.GPIO as GPIO
+
 from drivers.stepper import Stepper
-from constants import *
+from constants import *  # Should change to import as const for PEP 8.
 
 class Head(Stepper):
-    '''Class that represents the pipette inside the Perovskite Synthesis System'''
-
-    def __init__(self, limit: int = None, step_delay: int = None, microstep_mode: int = 1) -> None:
+    '''
+    Class that represents the pipette/suction cup tool head
+    '''
+    def __init__(self,
+        limit: int = None,
+        step_delay: int = None,
+        microstep_mode: int = 1) -> None:
+        '''
+        Initializes the head stepper motor
+        
+        Args:
+            limit (int, optional): The maximum step limit for the axis.
+            step_delay (int, optional): The delay between steps in seconds.
+            microstep_mode (int, optional): The microstep factor. Default: 1
+        '''
         self.limit = limit if limit else HEAD_LIMIT
         self.step_delay = step_delay if step_delay else HEAD_STEP_DELAY
         self.microstep_mode = microstep_mode if microstep_mode else HEAD_MICROSTEP_MODE
-        super().__init__(HEAD_STEP_PIN, HEAD_DIR_PIN, HEAD_EN_PIN, self.limit, self.step_delay, flip_dir=False, microstep_mode=self.microstep_mode)
+        super().__init__(HEAD_STEP_PIN,
+            HEAD_DIR_PIN,
+            HEAD_EN_PIN,
+            self.limit,
+            self.step_delay,
+            flip_dir=False,
+            microstep_mode=self.microstep_mode)
         
-        self.vacuum_pin = HEAD_VACUUM_PIN # GPIO pin for the vacuum pump
-        self.max_uL = HEAD_MAX_UL # Maximum volume of the pipette in microliters
-        self.current_steps = 0 # Track the current position of the pipette in microliters
+        self.vacuum_pin = HEAD_VACUUM_PIN  # GPIO pin for the vacuum pump.
+        self.max_uL = HEAD_MAX_UL  # Max vol of the pipette in microliters.
+        self.current_steps = 0  # The current position of the motor in steps.
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.vacuum_pin, GPIO.OUT)
 
-    # General motor control functions
+    # General motor control functions:
 
     def down(self, steps: int):
         '''Moves the pipette plunger down a number of steps'''
@@ -43,7 +63,7 @@ class Head(Stepper):
         self.current_steps -= steps
         print(f"current_steps = {self.current_steps}")
 
-    # Volume-based pipette actuation functions
+    # Volume-based pipette actuation functions:
         
     def volume_to_steps(self, uL: int) -> int:
         '''Corrects the volume of the pipette to account for linear error'''
@@ -91,23 +111,5 @@ class Head(Stepper):
         time.sleep(1)
 
 if __name__ == "__main__":
-    # Give user control of the pipette for testing
+    # Run with -i flag to test any functions of the head
     p = Head()
-    while(True):
-        print()
-        print("==========[Commands]==========")
-        print("down(steps) -- Moves the pipette finger down ")
-        print("up(steps) ---- Moves the pipette finger up")
-        print("down_uL(uL) -- Moves the pipette finger down a number of microliters")
-        print("up_uL(uL) ---- Moves the pipette finger up a number of microliters")
-        print("empty() ------ Empties the pipette of any fluid")
-        print("lower_cup() -- Lowers the suction cup")
-        print("raise_cup() -- Raises the suction cup")
-        print("enable() ----- Turns on the motor")
-        print("disable() ---- Turns off the motor")
-        print("ctrl+C ------- Closes program")
-        cmd = "p."+input(">> ")
-        try:
-            exec(cmd)
-        except Exception as E:
-            print(f"Error {E}, try again.")

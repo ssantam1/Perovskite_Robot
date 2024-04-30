@@ -8,6 +8,7 @@ Usage: Inheritable class for other classes that utilize stepper motors
 
 '''
 import time
+
 import board
 import RPi.GPIO as GPIO
 import numpy as np
@@ -43,9 +44,12 @@ class Stepper():
         # Initialize position
         self.pos = 0
 
-    # Acceleration functions
+    # Acceleration functions:
 
     def gen_linear_decel(self, accel_const: int, min_delay: float, max_delay: float = 1) -> list[float]:
+        '''
+        Generates a sequence of delays that if used to control a stepper motor will result in a linear deceleration profile
+        '''
         delay_array = []
         delay = min_delay
 
@@ -57,6 +61,9 @@ class Stepper():
         return delay_array[:-1]
 
     def gen_movement_seq(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = 1) -> list[float]:
+        '''
+        Generates a sequence of speeds to control a stepper motor to move a certain number of steps with linear acceleration and deceleration
+        '''
         if num_steps == 0:
             return []
 
@@ -82,25 +89,29 @@ class Stepper():
         return sequence
 
     def move_smooth(self, num_steps: int, accel_constant: int, max_speed: float, min_speed: float = None):
+        '''Moves the stepper motor with linear acceleration and deceleration'''
         steps = self.gen_movement_seq(num_steps, accel_constant, max_speed, min_speed)
 
         for step in steps:
             GPIO.output(self.step_pin, 1)
             time.sleep(step)
             GPIO.output(self.step_pin, 0)
-            time.sleep(0.000000001) # 1 nanosecond sleep
+            time.sleep(0.000000001)  # A nanosecond to let the driver read the low signal.
 
     def accel_positive(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
+        '''Linear acceleration movement in the positive direction'''
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
         self.move_smooth(num_steps, accel_constant, max_speed, min_speed)
         self.pos += num_steps
 
     def accel_negative(self, num_steps: int, accel_constant: int, max_speed: int, min_speed: int = None):
+        '''Linear acceleration movement in the negative direction'''
         GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
         self.move_smooth(num_steps, accel_constant, max_speed, min_speed)
         self.pos -= num_steps
 
     def move_steps(self, steps: int):
+        '''Moves stepper motor at constant speed for a given number of steps'''
         for _ in range(steps):
             GPIO.output(self.step_pin, 1)
             time.sleep(0.0001)
@@ -109,16 +120,20 @@ class Stepper():
             time.sleep(self.step_delay)
 
     def positive(self, steps: int):
+        '''Moves the stepper motor in the positive direction'''
         GPIO.output(self.dir_pin, 1 ^ self.flip_dir)
         self.move_steps(steps)
         self.pos += steps
 
     def negative(self, steps: int):
+        '''Moves the stepper motor in the negative direction'''
         GPIO.output(self.dir_pin, 0 ^ self.flip_dir)
         self.move_steps(steps)
         self.pos -= steps
 
 if __name__ == "__main__":
+    # Run with -i flag to test any functions of the stepper motor
+
     # Get motor parameters from user
     step_pin = int(input("Step Pin: "))
     dir_pin = int(input("Direction Pin: "))
@@ -129,11 +144,3 @@ if __name__ == "__main__":
     flip_dir = bool(input("Flip Direction: "))
     microstep_mode = int(input("Microstep Mode: "))
     stepper = Stepper(step_pin, dir_pin, en_pin, home_pin, limit, step_delay, flip_dir, microstep_mode)
-
-    while(True):
-        print(f"Current Position: {stepper.pos}")
-        cmd = "stepper."+input(">> ")
-        try:
-            exec(cmd)
-        except Exception as E:
-            print(f"Error {E}, try again.")

@@ -1,8 +1,10 @@
-from serial import Serial, SerialException
 import time
+
 import board
 import RPi.GPIO as GPIO
-from constants import *
+from serial import Serial, SerialException
+
+from constants import *  # Should change to import as const for PEP 8
 
 class SpinCoater():
     '''Class that represents the spin coater inside the Perovskite Synthesis System'''
@@ -79,16 +81,5 @@ class SpinCoater():
         print(self._send_and_return("spc run"))
 
 if __name__ == "__main__":
+    # Run with -i flag to test any functions of the spincoater
     spc = SpinCoater()
-    while True:
-        cmd = "spc."+input("SpinCoater>> ")
-        if cmd.lower() == "spc.stop":
-            break
-
-        try:
-            print(exec(cmd))
-        except Exception as E:
-            print(f"Error {E}, try again.")
-
-    input()
-    exit()
