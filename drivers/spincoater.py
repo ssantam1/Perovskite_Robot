@@ -1,3 +1,17 @@
+'''
+
+Spin Coater Class File
+
+Authors: ECD 415
+         Pierce Alvir - Project Lead (CoE)
+         Nicholas Blanchard - Mechanical Lead (ME)
+         Steven Santamorena - Software Lead (CoE)
+         Matthew Scott - Integration and Test Lead (ME)
+         Luis Wang - Electrical Lead (EE)
+
+Usage: Class to control the spin coater over serial connection
+
+'''
 import time
 
 import board

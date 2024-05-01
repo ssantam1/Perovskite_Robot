@@ -2,7 +2,12 @@
 
 Robotic Head Class File
 
-Created by Pierce Alvir and Steven Santamorena
+Authors: ECD 415
+         Pierce Alvir - Project Lead (CoE)
+         Nicholas Blanchard - Mechanical Lead (ME)
+         Steven Santamorena - Software Lead (CoE)
+         Matthew Scott - Integration and Test Lead (ME)
+         Luis Wang - Electrical Lead (EE)
 
 Usage: Class to operate robotic head mounted on the gantry
 

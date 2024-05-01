@@ -1,3 +1,17 @@
+'''
+
+GUI File
+
+Authors: ECD 415
+         Pierce Alvir - Project Lead (CoE)
+         Nicholas Blanchard - Mechanical Lead (ME)
+         Steven Santamorena - Software Lead (CoE)
+         Matthew Scott - Integration and Test Lead (ME)
+         Luis Wang - Electrical Lead (EE)
+
+Usage: GUI for easier user interaction when controlling the system
+
+'''
 from tkinter import *
 from tkinter import ttk
 import main
