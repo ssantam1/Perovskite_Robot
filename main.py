@@ -1,4 +1,4 @@
-"""
+'''
 
 Procedure Generation File
 
@@ -11,7 +11,7 @@ Authors: ECD 415
 
 Usage: Main procedure with additional helper functions
 
-"""
+'''
 import time
 
 import constants as const
