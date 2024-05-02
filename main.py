@@ -12,8 +12,8 @@ Authors: ECD 415
 Usage: Main procedure with additional helper functions
 
 '''
-import time
 
+import time
 import constants as const
 import drivers.axis as axis
 from drivers.head import Head
@@ -45,17 +45,19 @@ def tip_on(increments: tuple[int, int]) -> int:
     y_coord, x_coord, z_coord = const.PIP_TO_TIP
     x_offset = 45
     y_offset = 56 * const.Y_MICROSTEP  # Multiplied for microstepping.
-    y_coord = y_coord - y_offset * increment_y
+    # The new y and x coordinates will be based off of the starting coordinate subtracted/added to the offset * the increment.
+    y_coord = y_coord - y_offset * increment_y 
     x_coord = x_coord + x_offset * increment_x
     gantry.go_to((y_coord, x_coord, z_coord), True)
     
+    # If-else statements to stay within the tip pick up array
     if (increment_x > 11):
         increment_x = 0
         increment_y += 1
     else:
         increment_x += 1
         
-    return increment_x, increment_y
+    return increment_x, increment_y  # Return the next coming increments for reuse of function
     
 def tip_off():
     '''Dispose of a tip'''
