@@ -17,6 +17,9 @@ from tkinter import ttk
 import main
 
 def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> ttk.Combobox:
+    '''
+    Function to Create Option Boxes
+    '''
     row, column = coords
     padx, pady = pad
 
@@ -26,6 +29,9 @@ def new_combobox(frame: Frame, values: list[str], coords: tuple[int,int], pad: t
     return combo
 
 def new_entrybox(frame: Frame, func, coords: tuple[int,int], pad: tuple[int,int] = (5,5)) -> Entry:
+    '''
+    Function to Create Text Input Boxes
+    '''
     row, column = coords
     padx, pady = pad
 
@@ -36,8 +42,13 @@ def new_entrybox(frame: Frame, func, coords: tuple[int,int], pad: tuple[int,int]
     return entry
 
 def show_window():
-
+    '''
+    Display window that will hold the graphical user interface
+    '''
     def safeInt(string: str) -> int:
+        '''
+        Typecast a string to an integer
+        '''
         try:
             retval = int(string)
         except:
@@ -45,6 +56,9 @@ def show_window():
         return retval
 
     def update_remaining( _ ):
+        '''
+        Displays if the percentage mixture of the solution is acceptable
+        '''
         total = 100
         entry_values = [safeInt(sol_one_amt.get()), safeInt(sol_two_amt.get()), safeInt(sol_thr_amt.get())]
         remaining = total - sum(entry_values)
@@ -164,6 +178,9 @@ def show_window():
     params: dict = {} # This will be the dictionary of parameters to pass to the main
 
     def submit_inputs():
+        '''
+        Check submission to pass the inputs to procedure generation module
+        '''
         solutions = [(sol_one_combo.current(), safeInt(sol_one_amt.get())),
                      (sol_two_combo.current(), safeInt(sol_two_amt.get())),
                      (sol_thr_combo.current(), safeInt(sol_thr_amt.get()))]

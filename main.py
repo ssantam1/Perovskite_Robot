@@ -22,7 +22,7 @@ from drivers.spincoater import SpinCoater
 from drivers.hotplate import HotPlate
 
 __all__ = ['procedure']
-__author__ = "Pierce Alvir and Steven Santamorena"
+__author__ = "ECD415"
 __version__ = "1.0"
 
 # Create instances of the objects 
@@ -37,14 +37,14 @@ hotplate = HotPlate()
 
 # Functions for Pipette Tip
 def tip_on(increments: tuple[int, int]) -> int:
-    """
+    '''
     increments: tuple[int, int] - (x, y) tip location in the tip rack
-    (0, 0) Is the top left when looking from the front of the machine
-    """
+    (0, 0) is the top left when looking from the front of the machine
+    '''
     increment_x, increment_y = increments
     y_coord, x_coord, z_coord = const.PIP_TO_TIP
     x_offset = 45
-    y_offset = 56 * const.Y_MICROSTEP  # Multiplied for microstepping
+    y_offset = 56 * const.Y_MICROSTEP  # Multiplied for microstepping.
     y_coord = y_coord - y_offset * increment_y
     x_coord = x_coord + x_offset * increment_x
     gantry.go_to((y_coord, x_coord, z_coord), True)
@@ -59,7 +59,7 @@ def tip_on(increments: tuple[int, int]) -> int:
     
 def tip_off():
     '''Dispose of a tip'''
-    gantry.go_to(const.DISPOSE_BIN, True)  # Need this for washing stage
+    gantry.go_to(const.DISPOSE_BIN, True)
     y_axis.go_home()
     z_axis.up(800)
     time.sleep(0.1)
@@ -73,7 +73,7 @@ def wash_tip():
     gantry.home()
 
 def go_to_vial():
-    """Moves the gantry to position the pipette tip above the active vial."""
+    '''Moves the gantry to position the pipette tip above the active vial.'''
     (current_y, current_x, _) = gantry.get_coords()
     (target_y, target_x, _) = const.PIP_TO_VIAL
 
@@ -212,7 +212,7 @@ def procedure(
     
     # Spin Coater Stage
     get_slide()
-    drop_slide_to_spin()  # Needs to be written, but drop slide in spin coater
+    drop_slide_to_spin()
     extract_from_vial(head.max_uL, const.VIAL_EMPTY_A)
     gantry.go_to(const.PIP_TO_SPIN, True)
     head.empty()
@@ -240,7 +240,7 @@ def procedure(
     # Hot Plate Stage
     retrieve_slide_from_spin()
     hotplate.heat_up()
-    slide_to_hot()  # Need to write but bring slide to hot plate
+    slide_to_hot() 
     hotplate.anneal(hot_time)
-    retrieve_slide_from_hot()  # Maybe?
+    retrieve_slide_from_hot()
     slide_return()
