@@ -32,7 +32,7 @@ We would like to thank the ECE Department at Binghamton University for sponsorin
 For inquiries about the project or collaboration opportunities, please contact:
 
 - Project Lead: Pierce Alvir
-- Email: palvir1@binghamton.edu
+- Email: piercealvir34@gmail.com
 
 - Software Lead: Steven Santamorena
 - Email: stevenasanta@gmail.com
