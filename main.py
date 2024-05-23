@@ -20,7 +20,7 @@ import time
 # Then, tasks can be called like: task.wash_tip().
 # Although, calling it task may be confusing...
 # ...in the future if async processes are ever added
-from Dtask import *
+from tasks import *
 
 __all__ = ['procedure']
 __author__ = "ECD415"
