@@ -1,6 +1,12 @@
+# =======================================================================
+# If this repo is cloned onto a new machine the spincoater will not work.
+# This is because the package pyserial is not installed on the machine.
+# This script will check pyserial is installed, and install it if not.
+# =======================================================================
+
 import subprocess
 
-#Method to install packages using pip
+# Method to install packages using pip
 def pip_install(packageName:str):
     try:
         print(f'Attempting to install {packageName}, please allow up to 30 seconds for installation.')
@@ -10,11 +16,11 @@ def pip_install(packageName:str):
         subprocess.call(f'pip install {packageName}')
         print(f'{packageName} should be installed, fatal errors will occur if install failed.')
 
-#Check for pyserial installation, and install it if it isn't found
+# Check for pyserial installation, and install it if it isn't found
 try:
     import serial
 except:
     pip_install("pyserial")
 
-#This is only here so the program doesn't immediately exit when there's an error
+# This is only here so the program doesn't immediately exit when there's an error
 input("Press any key to exit")
