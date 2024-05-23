@@ -16,9 +16,5 @@ try:
 except:
     pip_install("pyserial")
 
-#Import the spin coater module and run the main
-import test_spin_coater
-test_spin_coater.run()
-
 #This is only here so the program doesn't immediately exit when there's an error
 input("Press any key to exit")
